@@ -7,7 +7,6 @@ import type { FilterValue, SorterResult } from "antd/es/table/interface";
 interface DataType {
   id: number;
   name: string;
-  slug: string;
   status: number;
 }
 
@@ -18,7 +17,7 @@ interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
-export default function Unit() {
+export default function Profession() {
   const [data, setData] = useState<DataType[]>();
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +33,7 @@ export default function Unit() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA UNIT', dataIndex: 'name', sorter: false, render: (value) => {
+    {title: 'NAMA PROFESI', dataIndex: 'name', sorter: false, render: (value) => {
       return `${value}`;
     }},
   ];
@@ -49,7 +48,7 @@ export default function Unit() {
   }
 
   const fetchData = async (page?: any) => {
-    const request = await fetch(`/api/unit?page=${page ?? 1}`);
+    const request = await fetch(`/api/role?page=${page ?? 1}`);
     const response = await request.json();
 
     setData(response.data);

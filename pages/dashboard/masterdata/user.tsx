@@ -7,8 +7,10 @@ import type { FilterValue, SorterResult } from "antd/es/table/interface";
 interface DataType {
   id: number;
   name: string;
-  slug: string;
-  status: number;
+  username: string;
+  unit?: any;
+  role?: any;
+  email: string;
 }
 
 interface TableParams {
@@ -18,7 +20,7 @@ interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
-export default function Unit() {
+export default function User() {
   const [data, setData] = useState<DataType[]>();
   const [loading, setLoading] = useState(false);
 
@@ -34,9 +36,21 @@ export default function Unit() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA UNIT', dataIndex: 'name', sorter: false, render: (value) => {
+    {title: 'NAMA', dataIndex: 'name', sorter: false, render: (value) => {
       return `${value}`;
     }},
+    {title: 'USERNAME', dataIndex: 'username', sorter: false, render: (value) => {
+      return `${value}`;
+    }},
+    {title: 'EMAIL', dataIndex: 'email', sorter: false, render: (value) => {
+      return `${value}`;
+    }},
+    {title: 'UNIT', dataIndex: 'unit', sorter: false, render: (value) => {
+      return `${value.name === "" ? "-" : value.name}`;
+    }},
+    {title: 'ROLE', dataIndex: 'role', sorter: false, render: (value) => {
+      return `${value.name === "" ? "-" : value.name}`;
+    }}
   ];
 
   const handleTableChange = (pagination: TablePaginationConfig) => {
@@ -49,7 +63,7 @@ export default function Unit() {
   }
 
   const fetchData = async (page?: any) => {
-    const request = await fetch(`/api/unit?page=${page ?? 1}`);
+    const request = await fetch(`/api/user?page=${page ?? 1}`);
     const response = await request.json();
 
     setData(response.data);
