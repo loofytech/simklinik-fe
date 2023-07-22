@@ -1,7 +1,7 @@
 import AppLayout from "@/layouts/AppLayout";
 
-export default function Dashboard() {
+export default function Registration() {
   return (<AppLayout>
-    Dashboard
+    Registration
   </AppLayout>);
 }

@@ -1,12 +1,8 @@
-import { useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Button, theme } from "antd";
+import {useState} from "react";
+import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {Layout, Menu, Button, theme} from "antd";
+import {items} from "@/routes";
+import { useRouter } from "next/router";
 
 const { Header, Sider, Content } = Layout;
 
@@ -16,35 +12,19 @@ interface LProps {
 
 export default function AppLayout({children}: LProps) {
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer }
-  } = theme.useToken();
+  const {token: {colorBgContainer }} = theme.useToken();
+  const rts = useRouter();
 
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
+        <div className="text-white py-5 px-3">Loofytech klinik</div>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
+          defaultSelectedKeys={[rts.pathname]}
+          defaultOpenKeys={[rts.pathname.split("/")[2]]}
+          items={items}
         />
       </Sider>
       <Layout>
@@ -64,7 +44,6 @@ export default function AppLayout({children}: LProps) {
           style={{
             margin: '24px 16px',
             padding: 24,
-            // minHeight: "100vh",
             background: colorBgContainer,
           }}
         >

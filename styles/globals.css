@@ -5,3 +5,7 @@
 .ant-layout.ant-layout-has-sider {
   min-height: 100vh;
 }
+
+.ant-menu-item {
+  border-radius: 4px !important;
+}
