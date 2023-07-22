@@ -31,6 +31,7 @@ export const items: MenuItem[] = [
     getItem(route("/dashboard/masterdata/unit", "Units"), "/dashboard/masterdata/unit"),
     getItem(route("/dashboard/masterdata/profession", "Profession"), "/dashboard/masterdata/profession"),
     getItem(route("/dashboard/masterdata/user", "Users"), "/dashboard/masterdata/user"),
+    getItem(route("/dashboard/masterdata/patient", "Patients"), "/dashboard/masterdata/patient"),
   ]),
 
   // getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
