@@ -9,3 +9,7 @@
 .ant-menu-item {
   border-radius: 4px !important;
 }
+
+.ant-table-thead .ant-table-cell {
+  white-space: nowrap;
+}
