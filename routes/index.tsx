@@ -41,6 +41,8 @@ export const items: MenuItem[] = [
     getItem(route("/dashboard/masterdata/supplier", "Suppliers"), "/dashboard/masterdata/supplier"),
     getItem(route("/dashboard/masterdata/clinic-rate", "Clinic Rates"), "/dashboard/masterdata/clinic-rate"),
     getItem(route("/dashboard/masterdata/master-lab-test", "Master Lab Test"), "/dashboard/masterdata/master-lab-test"),
+    getItem(route("/dashboard/masterdata/relation-agency", "Relation Agency"), "/dashboard/masterdata/relation-agency"),
+    getItem(route("/dashboard/masterdata/insurance-product", "Insurance Product"), "/dashboard/masterdata/insurance-product"),
   ]),
 
   // getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
