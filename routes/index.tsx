@@ -1,6 +1,7 @@
 import {
   RadarChartOutlined,
-  ScheduleOutlined
+  ScheduleOutlined,
+  SnippetsOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from 'antd';
 import Link from "next/link";
@@ -25,9 +26,7 @@ const route = (path: string, label: string) => {
 
 export const items: MenuItem[] = [
   getItem(route("/dashboard", "Dashboard"), "/dashboard", <RadarChartOutlined />),
-  getItem(route("/dashboard/registration", "Registration"), "/dashboard/registration", <ScheduleOutlined />),
-
-  getItem('Masterdata', 'masterdata', <ScheduleOutlined />, [
+  getItem('Masterdata', 'masterdata', <SnippetsOutlined />, [
     getItem(route("/dashboard/masterdata/unit", "Units"), "/dashboard/masterdata/unit"),
     getItem(route("/dashboard/masterdata/profession", "Profession"), "/dashboard/masterdata/profession"),
     getItem(route("/dashboard/masterdata/user", "Users"), "/dashboard/masterdata/user"),
@@ -44,6 +43,7 @@ export const items: MenuItem[] = [
     getItem(route("/dashboard/masterdata/relation-agency", "Relation Agency"), "/dashboard/masterdata/relation-agency"),
     getItem(route("/dashboard/masterdata/insurance-product", "Insurance Product"), "/dashboard/masterdata/insurance-product"),
   ]),
+  getItem(route("/dashboard/registration", "Registration"), "/dashboard/registration", <ScheduleOutlined />),
 
   // getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
   //   getItem('Option 9', '9'),

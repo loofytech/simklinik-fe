@@ -18,10 +18,11 @@ export default function AppLayout({children}: LProps) {
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="text-white py-5 px-3">Loofytech klinik</div>
+        <div className="select-none text-white py-5 px-3">Loofytech klinik</div>
         <Menu
           theme="dark"
           mode="inline"
+          className="select-none"
           defaultSelectedKeys={[rts.pathname]}
           defaultOpenKeys={[rts.pathname.split("/")[2]]}
           items={items}
@@ -42,9 +43,9 @@ export default function AppLayout({children}: LProps) {
         </Header>
         <Content
           style={{
-            margin: '24px 16px',
-            padding: 24,
-            background: colorBgContainer,
+            margin: '24px',
+            // padding: 24,
+            // background: colorBgContainer,
           }}
         >
           {children}
