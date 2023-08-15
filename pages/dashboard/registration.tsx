@@ -196,15 +196,36 @@ export default function Registration() {
   }
 
   const handleEraseRegional = (param: string) => {
-    setInputPatient((prevState: any) => ({
-      ...prevState,
-      address: {
+    if (param == "province") {
+      setInputPatientRegional((prevState: any) => ({
+        ...prevState,
         province: null,
         regency: null,
         district: null,
-        sub_district: null
-      }
-    }));
+        subDistrict: null
+      }));
+    }
+    if (param == "regency") {
+      setInputPatientRegional((prevState: any) => ({
+        ...prevState,
+        regency: null,
+        district: null,
+        subDistrict: null
+      }));
+    }
+    if (param == "district") {
+      setInputPatientRegional((prevState: any) => ({
+        ...prevState,
+        district: null,
+        subDistrict: null
+      }));
+    }
+    if (param == "subDistrict") {
+      setInputPatientRegional((prevState: any) => ({
+        ...prevState,
+        subDistrict: null
+      }));
+    }
   }
 
   return (<AppLayout>
@@ -222,6 +243,7 @@ export default function Registration() {
           placeholder="Cari NO. RM"
           enterButton={"Cari Pasien"}
           size="large"
+          className="search-patient"
           // onClick={handleSearch}
           onPressEnter={handleSearch}
           disabled={search || patientNew == 0}
@@ -281,6 +303,7 @@ export default function Registration() {
               onChange={(evt) => handleInputPatient(evt, "address")}
             />
           </div>
+          {/* Province, Regency, District, Subdistrict */}
           <div className="flex flex-col gap-1">
             <span className="font-bold">Provinsi, Kabupaten, Kecamatan, Kelurahan</span>
             <div className="i-pkck">

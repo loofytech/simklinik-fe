@@ -62,3 +62,11 @@
   padding-left: 24px;
   padding-right: 24px;
 }
+
+.search-patient .ant-input:disabled:hover {
+  border-color: #d9d9d9;
+}
+
+.search-patient .ant-btn:disabled:hover {
+  background: #EBEBEB !important;
+}
