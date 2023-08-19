@@ -1,56 +1,39 @@
-import {useState} from "react";
-import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
-import {Layout, Menu, Button, theme} from "antd";
-import {items} from "@/routes";
-import { useRouter } from "next/router";
-
-const { Header, Sider, Content } = Layout;
+import Menubar from "@/components/Menubar";
+import Topbar from "@/components/Topbar";
+import useScript from "@/utils/useScript";
+import Script from "next/script";
 
 interface LProps {
   children: React.ReactNode;
 }
 
 export default function AppLayout({children}: LProps) {
-  const [collapsed, setCollapsed] = useState(false);
-  const {token: {colorBgContainer }} = theme.useToken();
-  const rts = useRouter();
+  useScript([
+    "/static/scripts/helpers.js",
+    "/static/scripts/jquery.js",
+    "/static/scripts/popper.js",
+    "/static/scripts/bootstrap.js",
+    "/static/scripts/perfect-scrollbar.js",
+    "/static/scripts/menu.js",
+    "/static/scripts/apexcharts.js",
+    "/static/scripts/main.js"
+  ]);
 
   return (
-    <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="select-none text-white py-5 px-3">Loofytech klinik</div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          className="select-none"
-          defaultSelectedKeys={[rts.pathname]}
-          defaultOpenKeys={[rts.pathname.split("/")[2]]}
-          items={items}
-        />
-      </Sider>
-      <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          />
-        </Header>
-        <Content
-          style={{
-            margin: '24px',
-            // padding: 24,
-            // background: colorBgContainer,
-          }}
-        >
-          {children}
-        </Content>
-      </Layout>
-    </Layout>
+    <div className="layout-wrapper layout-content-navbar">
+      <div className="layout-container">
+        <Menubar />
+        <div className="layout-page">
+          <Topbar />
+          <div className="content-wrapper">
+            <div className="container-xxl flex-grow-1 container-p-y">
+              {children}              
+            </div>
+            <div className="content-backdrop fade"></div>
+          </div>
+        </div>
+      </div>
+      <div className="layout-overlay layout-menu-toggle"></div>
+    </div>
   );
 }

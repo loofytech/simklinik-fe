@@ -2,6 +2,8 @@ import AppLayout from "@/layouts/AppLayout";
 
 export default function Dashboard() {
   return (<AppLayout>
-    Dashboard
+    <div className="card">
+      <div className="card-body">Dashboard</div>
+    </div>
   </AppLayout>);
 }
