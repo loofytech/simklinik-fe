@@ -34,7 +34,15 @@ export const items = [
       {
         label: 'Status Pernikahan',
         path: '/dashboard/masterdata/marital-status'
-      }
+      },
+      {
+        label: 'Pekerjaan',
+        path: '/dashboard/masterdata/job'
+      },
+      {
+        label: 'Pendidikan',
+        path: '/dashboard/masterdata/education'
+      },
     ]
   }
 ];

@@ -8,15 +8,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (requestMethod) {
       case "GET":
         const {page} = req.query;
-        const http = await fetch(BASE_API + "/education/data?page=" + page);
-        const httpResponse = await http.json();
+        const requestGet = await fetch(BASE_API + "/education/?page=" + page);
+        const httpResponse = await requestGet.json();
 
         return res.status(200).json(httpResponse);
       case "POST":
-        if (req.body.trim().length === 0) return res.status(401).json({message: 'body empty'});
-        return res.status(200).json({message: "POST"})
+        const {education_name, education_slug} = JSON.parse(req.body);
+        const requestPost = await fetch(BASE_API + "/education/create", {
+          method: "POST",
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            education_name: education_name,
+            education_slug: education_slug
+          })
+        });
+
+        if ([200, 201].includes(requestPost.status)) {
+          return res.status(200).json({message: "Submit OK!"});
+        }
+        return res.status(400).json({message: "Submit FAILED!"});
       default:
-        return res.status(200).json({message: 'Welcome to API Routes!'});
+        return res.status(200).json({message: "Hello World"});
     }
   } catch (error) {
     return res.status(500).json(error);

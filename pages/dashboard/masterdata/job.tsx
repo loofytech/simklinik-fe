@@ -1,15 +1,15 @@
 import AppLayout from "@/layouts/AppLayout";
 import { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Modal } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import moment from "moment";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface DataType {
   id: number;
-  name: string;
-  slug: string;
-  status: number;
+  job_name: string;
+  job_slug: string;
 }
 
 interface TableParams {
@@ -21,7 +21,10 @@ interface TableParams {
 
 export default function Job() {
   const [data, setData] = useState<DataType[]>();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [modalCreate, setModalCreate] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [submit, setSubmit] = useState<boolean>(false);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -35,17 +38,10 @@ export default function Job() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA', dataIndex: 'name', sorter: false, render: (value, record) => {
+    {title: 'NAMA', dataIndex: 'job_name', sorter: false, render: (value, record) => {
       return `${value}`;
-    }},
-    {title: 'STATUS', dataIndex: 'status', sorter: false, render: (value, record) => {
-      if (value < 1) {
-        return <span className="bg-red-500 text-white text-xs font-bold px-4 py-1 rounded">Tidak Aktif</span>;
-      } else {
-        return <span className="bg-green-500 text-white text-xs font-bold px-4 py-1 rounded">Aktif</span>;
-      }
-    }},
-  ];
+    }}
+  ]
 
   const handleTableChange = (pagination: TablePaginationConfig) => {
     setTableParams({pagination});
@@ -69,19 +65,71 @@ export default function Job() {
     }});
   }
 
+  const postData = async (event: any) => {
+    event.preventDefault();
+    setSubmit(true);
+
+    const request = await fetch(`/api/job`, {
+      method: "POST",
+      body: JSON.stringify({
+        job_name: name,
+        job_slug: name.split(" ").join("_").toLowerCase()
+      })
+    });
+
+    if (request.status === 200) {
+      const response = await request.json();
+      return location.reload();
+    }
+    setSubmit(false);
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
 
   return (<AppLayout>
-    <Table
-      bordered
-      columns={columns}
-      rowKey={(record) => record.id}
-      dataSource={data}
-      pagination={tableParams.pagination}
-      loading={loading}
-      onChange={handleTableChange}
-    />
+    <div className="bg-white">
+      <div className="p-3">
+        <button className="px-4 py-2 bg-primary text-white rounded" type="button" onClick={() => setModalCreate(true)}>Tambah Pekerjaan</button>
+      </div>
+      <Table
+        bordered
+        columns={columns}
+        rowKey={(record) => record.id}
+        dataSource={data}
+        pagination={tableParams.pagination}
+        loading={loading}
+        onChange={handleTableChange}
+      />
+    </div>
+    <Modal
+      title="Tambah Pekerjaan"
+      centered
+      open={modalCreate}
+      onCancel={() => setModalCreate(false)}
+      footer={false}
+    >
+      <form onSubmit={postData} className="mt-3">
+        <div className="mb-3 flex flex-col gap-1.5">
+          <label htmlFor="name" className="font-bold">Pekerjaan</label>
+          <input
+            type="text"
+            className="px-3 border rounded h-10 outline-none"
+            autoComplete="off"
+            value={name}
+            onChange={(evt) => setName(evt.target.value)}
+          />
+        </div>
+        <button
+          type="submit"
+          className={`${submit ? "opacity-70" : "opacity-100"} bg-primary px-4 py-2 text-white rounded text-sm flex items-center gap-2`}
+          disabled={submit}
+        >
+          {submit && <LoadingOutlined style={{ fontSize: 18 }} spin />}
+          Submit
+        </button>
+      </form>
+    </Modal>
   </AppLayout>);
 }

@@ -232,10 +232,14 @@ export default function Registration() {
   const [religions, setReligions] = useState<any>([]);
   const [ethnics, setEthnics] = useState<any>([]);
   const [maritalStatuses, setMaritalStatuses] = useState<any>([]);
+  const [jobs, setJobs] = useState<any>([]);
+  const [educations, setEducations] = useState<any>([]);
   const [religion, setReligion] = useState<any>(null);
   const [gender, setGender] = useState<any>(null);
   const [ethnic, setEthnic] = useState<any>(null);
   const [maritalStatus, setMaritalStatus] = useState<any>(null);
+  const [job, setJob] = useState<any>(null);
+  const [education, setEducation] = useState<any>(null);
 
   const fetchReligion = async () => {
     const request = await fetch("/api/religion");
@@ -261,9 +265,48 @@ export default function Registration() {
     }
   }
 
+  const fetchMaritalStatus = async () => {
+    const request = await fetch("/api/marital-status");
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.marital_name, value: dtl.id});
+      });
+      return setMaritalStatuses(data);
+    }
+  }
+
+  const fetchJob = async () => {
+    const request = await fetch("/api/job");
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.job_name, value: dtl.id});
+      });
+      return setJobs(data);
+    }
+  }
+
+  const fetchEducation = async () => {
+    const request = await fetch("/api/education");
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.education_name, value: dtl.id});
+      });
+      return setEducations(data);
+    }
+  }
+
   useEffect(() => {
     fetchReligion();
     fetchEthnic();
+    fetchMaritalStatus();
+    fetchJob();
+    fetchEducation();
   }, []);
 
   return (<AppLayout>
@@ -465,28 +508,28 @@ export default function Registration() {
           <div className="flex flex-col gap-1">
             <span className="font-bold">Status Pernikahan</span>
             <Select
-              defaultValue={inputPatient.blood}
-              // onChange={(evt) => handleInputResponsible(evt, "relation")}
+              defaultValue={maritalStatus}
+              onChange={(value) => setMaritalStatus(value)}
               allowClear
-              options={bloodOptions}
+              options={maritalStatuses}
             />
           </div>
           <div className="flex flex-col gap-1">
             <span className="font-bold">Pekerjaan</span>
             <Select
-              defaultValue={inputPatient.blood}
-              // onChange={(evt) => handleInputResponsible(evt, "relation")}
+              defaultValue={job}
+              onChange={(value) => setJob(value)}
               allowClear
-              options={bloodOptions}
+              options={jobs}
             />
           </div>
           <div className="flex flex-col gap-1">
             <span className="font-bold">Pendidikan Terakhir</span>
             <Select
-              defaultValue={inputPatient.blood}
-              // onChange={(evt) => handleInputResponsible(evt, "relation")}
+              defaultValue={education}
+              onChange={(value) => setEducation(value)}
               allowClear
-              options={bloodOptions}
+              options={educations}
             />
           </div>
         </div>

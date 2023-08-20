@@ -10,6 +10,8 @@ export default function Document() {
         <link rel="stylesheet" href="/static/styles/demo.css" />
         <link rel="stylesheet" href="/static/styles/perfect-scrollbar.css" />
         <link rel="stylesheet" href="/static/styles/apex-charts.css" />
+        <script src="/static/scripts/helpers.js"></script>
+        <script src="/static/scripts/menu.js"></script>
       </Head>
       <body>
         <Main />

@@ -1,8 +1,6 @@
 import Menubar from "@/components/Menubar";
 import Topbar from "@/components/Topbar";
 import useScript from "@/utils/useScript";
-import Head from "next/head";
-import Script from "next/script";
 
 interface LProps {
   children: React.ReactNode;
@@ -19,10 +17,6 @@ export default function AppLayout({children}: LProps) {
   ]);
 
   return (<>
-    <Head>
-      <script src="/static/scripts/helpers.js"></script>
-      <script src="/static/scripts/menu.js"></script>
-    </Head>
     <div className="layout-wrapper layout-content-navbar">
       <div className="layout-container">
         <Menubar />
