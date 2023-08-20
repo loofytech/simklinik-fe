@@ -70,3 +70,10 @@
 .search-patient .ant-btn:disabled:hover {
   background: #EBEBEB !important;
 }
+
+.ant-table-thead tr th {
+  background: #696CFF !important;
+  color: #FFFFFF !important;
+  border-color: #696CFF !important;
+  border-radius: 0 !important;
+}

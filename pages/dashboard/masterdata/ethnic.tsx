@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { Table, Modal } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
-import moment from "moment";
 import { LoadingOutlined } from "@ant-design/icons";
 
 interface DataType {
   id: number;
-  religion_name: string;
-  religion_slug: string;
+  ethnic_name: string;
+  ethnic_slug: string;
 }
 
 interface TableParams {
@@ -19,7 +18,7 @@ interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
-export default function Religion() {
+export default function Ethnic() {
   const [data, setData] = useState<DataType[]>();
   const [loading, setLoading] = useState<boolean>(false);
   const [modalCreate, setModalCreate] = useState<boolean>(false);
@@ -38,7 +37,7 @@ export default function Religion() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA', dataIndex: 'religion_name', sorter: false, render: (value, record) => {
+    {title: 'NAMA', dataIndex: 'ethnic_name', sorter: false, render: (value, record) => {
       return `${value}`;
     }}
   ]
@@ -53,7 +52,7 @@ export default function Religion() {
   }
 
   const fetchData = async (page?: any) => {
-    const request = await fetch(`/api/religion?page=${page ?? 1}`);
+    const request = await fetch(`/api/ethnic?page=${page ?? 1}`);
     const response = await request.json();
 
     setData(response.data);
@@ -69,11 +68,11 @@ export default function Religion() {
     event.preventDefault();
     setSubmit(true);
 
-    const request = await fetch(`/api/religion`, {
+    const request = await fetch(`/api/ethnic`, {
       method: "POST",
       body: JSON.stringify({
-        religion_name: name,
-        religion_slug: name.split(" ").join("_").toLowerCase()
+        ethnic_name: name,
+        ethnic_slug: name.split(" ").join("_").toLowerCase()
       })
     });
 
@@ -91,7 +90,7 @@ export default function Religion() {
   return (<AppLayout>
     <div className="bg-white">
       <div className="p-3">
-        <button className="px-4 py-2 bg-primary text-white rounded" type="button" onClick={() => setModalCreate(true)}>Tambah Kepercayaan</button>
+        <button className="px-4 py-2 bg-primary text-white rounded" type="button" onClick={() => setModalCreate(true)}>Tambah Suku</button>
       </div>
       <Table
         bordered
@@ -104,7 +103,7 @@ export default function Religion() {
       />
     </div>
     <Modal
-      title="Tambah Kepercayaan"
+      title="Tambah Suku"
       centered
       open={modalCreate}
       onCancel={() => setModalCreate(false)}
@@ -112,7 +111,7 @@ export default function Religion() {
     >
       <form onSubmit={postData} className="mt-3">
         <div className="mb-3 flex flex-col gap-1.5">
-          <label htmlFor="name" className="font-bold">Kepercayaan</label>
+          <label htmlFor="name" className="font-bold">Suku</label>
           <input
             type="text"
             className="px-3 border rounded h-10 outline-none"

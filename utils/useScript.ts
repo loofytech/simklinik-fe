@@ -9,7 +9,6 @@ export default function useScript(scripts: string[]) {
     if (router) for (let item of scripts) {
       loadScript(item);
     }
-
     return () => {
       if (scriptRefArr.length > 0) {
         removeScript();
@@ -20,11 +19,11 @@ export default function useScript(scripts: string[]) {
   const loadScript = (src: any) => {
     const script = document.createElement("script");
     script.src = src;
-    script.async = true;
     if (!scriptRefArr.find((item: any) => item.url === src)) {
       document.body.appendChild(script);
       scriptRefArr.push({url: src, script});
     }
+    // console.log(src);
   }
 
   const removeScript = () => {
@@ -33,5 +32,6 @@ export default function useScript(scripts: string[]) {
         document.body.removeChild(item.script);
       }
     });
+    // console.log(scriptRefArr);
   }
 }

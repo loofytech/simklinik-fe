@@ -4,9 +4,10 @@ import { Card, Radio, Checkbox, Input, Form, Select, DatePicker, Modal, Button }
 import type { RadioChangeEvent, DatePickerProps } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { CloseCircleOutlined, CloseCircleFilled, LoadingOutlined } from "@ant-design/icons";
+import { truncate } from "@/utils/globalFunction";
 
 export default function Registration() {
-  const { TextArea, Search } = Input;
+  const { Search } = Input;
   const [regional, setRegional] = useState<boolean>(false);
   const [searchRegional, setSearchRegional] = useState<string>("");
   const [regionalResult, setRegionalResult] = useState<any>(null);
@@ -228,6 +229,43 @@ export default function Registration() {
     }
   }
 
+  const [religions, setReligions] = useState<any>([]);
+  const [ethnics, setEthnics] = useState<any>([]);
+  const [maritalStatuses, setMaritalStatuses] = useState<any>([]);
+  const [religion, setReligion] = useState<any>(null);
+  const [gender, setGender] = useState<any>(null);
+  const [ethnic, setEthnic] = useState<any>(null);
+  const [maritalStatus, setMaritalStatus] = useState<any>(null);
+
+  const fetchReligion = async () => {
+    const request = await fetch("/api/religion");
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.religion_name, value: dtl.id});
+      });
+      return setReligions(data);
+    }
+  }
+
+  const fetchEthnic = async () => {
+    const request = await fetch("/api/ethnic");
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.ethnic_name, value: dtl.id});
+      });
+      return setEthnics(data);
+    }
+  }
+
+  useEffect(() => {
+    fetchReligion();
+    fetchEthnic();
+  }, []);
+
   return (<AppLayout>
     <div className="grid grid-cols-2 gap-6">
       {/* Data Pasien */}
@@ -296,12 +334,11 @@ export default function Registration() {
           </div>
           <div className="flex flex-col gap-1">
             <span className="font-bold">Alamat</span>
-            <TextArea
-              // showCount
+            {/* <TextArea
               maxLength={100}
               value={inputPatient.address}
               onChange={(evt) => handleInputPatient(evt, "address")}
-            />
+            /> */}
           </div>
           {/* Province, Regency, District, Subdistrict */}
           <div className="flex flex-col gap-1">
@@ -310,8 +347,8 @@ export default function Registration() {
               <div className="absolute left-0 top-0 right-0 bottom-0" onClick={showModal}></div>
               <div className="flex gap-1 h-full absolute top-0">
                 {inputPatientRegional.province && (
-                  <div className="text-xs bg-primary flex items-center gap-1 pl-2 rounded overflow-hidden">
-                    <span className="select-none text-white uppercase">{inputPatientRegional.province.name}</span>
+                  <div className="text-xs bg-primary flex items-center gap-1 pl-2 rounded">
+                    <div className="select-none text-white">{truncate(inputPatientRegional.province.name)}</div>
                     <div className="flex items-center pl-1 pr-2 h-full">
                       <button className="flex text-white" onClick={() => handleEraseRegional("province")}><CloseCircleFilled style={{fontSize: 16}} /></button>
                     </div>
@@ -319,7 +356,7 @@ export default function Registration() {
                 )}
                 {inputPatientRegional.regency && (
                   <div className="text-xs bg-primary flex items-center gap-1 pl-2 rounded">
-                    <span className="select-none text-white uppercase">{inputPatientRegional.regency.name}</span>
+                    <div className="select-none text-white uppercase">{truncate(inputPatientRegional.regency.name)}</div>
                     <div className="flex items-center pl-1 pr-2 h-full">
                       <button className="flex text-white" onClick={() => handleEraseRegional("regency")}><CloseCircleFilled style={{fontSize: 16}} /></button>
                     </div>
@@ -327,7 +364,7 @@ export default function Registration() {
                 )}
                 {inputPatientRegional.district && (
                   <div className="text-xs bg-primary flex items-center gap-1 pl-2 rounded">
-                    <span className="select-none text-white uppercase">{inputPatientRegional.district.name}</span>
+                    <div className="select-none text-white uppercase">{truncate(inputPatientRegional.district.name)}</div>
                     <div className="flex items-center pl-1 pr-2 h-full">
                       <button className="flex text-white" onClick={() => handleEraseRegional("district")}><CloseCircleFilled style={{fontSize: 16}} /></button>
                     </div>
@@ -335,7 +372,7 @@ export default function Registration() {
                 )}
                 {inputPatientRegional.subDistrict && (
                   <div className="text-xs bg-primary flex items-center gap-1 pl-2 rounded">
-                    <span className="select-none text-white uppercase">{inputPatientRegional.subDistrict.name}</span>
+                    <div className="select-none text-white uppercase">{truncate(inputPatientRegional.subDistrict.name)}</div>
                     <div className="flex items-center pl-1 pr-2 h-full">
                       <button className="flex text-white" onClick={() => handleEraseRegional("subDistrict")}><CloseCircleFilled style={{fontSize: 16}} /></button>
                     </div>
@@ -388,7 +425,7 @@ export default function Registration() {
             <div className="flex flex-col gap-1">
               <span className="font-bold">Golongan Darah</span>
               <Select
-                defaultValue={inputPatient.blood}
+                value={inputPatient.blood}
                 // onChange={(evt) => handleInputResponsible(evt, "relation")}
                 allowClear
                 options={bloodOptions}
@@ -397,28 +434,31 @@ export default function Registration() {
             <div className="flex flex-col gap-1">
               <span className="font-bold">Agama</span>
               <Select
-                defaultValue={inputPatient.blood}
-                // onChange={(evt) => handleInputResponsible(evt, "relation")}
+                defaultValue={religion}
+                onChange={(value) => setReligion(value)}
                 allowClear
-                options={bloodOptions}
+                options={religions}
               />
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-bold">Jenis Kelamin</span>
               <Select
-                defaultValue={inputPatient.blood}
-                // onChange={(evt) => handleInputResponsible(evt, "relation")}
+                defaultValue={gender}
+                onChange={(value) => setGender(value)}
                 allowClear
-                options={bloodOptions}
+                options={[
+                  {label: "Laki - Laki", value: "L"},
+                  {label: "Perempuan", value: "P"}
+                ]}
               />
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-bold">Suku</span>
               <Select
-                defaultValue={inputPatient.blood}
-                // onChange={(evt) => handleInputResponsible(evt, "relation")}
+                defaultValue={ethnic}
+                onChange={(value) => setEthnic(value)}
                 allowClear
-                options={bloodOptions}
+                options={ethnics}
               />
             </div>
           </div>
@@ -496,13 +536,13 @@ export default function Registration() {
           </div>
           <div className="mt-4 flex flex-col gap-1">
             <span className="font-bold">Alamat</span>
-            <TextArea
+            {/* <TextArea
               // showCount
               maxLength={100}
               value={inputResponsible.address}
               onChange={(evt) => handleInputResponsible(evt, "address")}
               disabled={inputResponsible.self}
-            />
+            /> */}
           </div>
         </Card>
         {/* Pelayanan Klinik */}

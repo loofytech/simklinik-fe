@@ -8,21 +8,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (requestMethod) {
       case "GET":
         const {page} = req.query;
-        const requestGet = await fetch(BASE_API + "/religion/?page=" + page);
+        const requestGet = await fetch(BASE_API + "/marital/?page=" + page);
         const httpResponse = await requestGet.json();
 
         return res.status(200).json(httpResponse);
       case "POST":
-        const {religion_name, religion_slug} = JSON.parse(req.body);
-        const requestPost = await fetch(BASE_API + "/religion/create", {
+        const {marital_name, marital_slug} = JSON.parse(req.body);
+        const requestPost = await fetch(BASE_API + "/marital/create", {
           method: "POST",
           headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            religion_name: religion_name,
-            religion_slug: religion_slug
+            marital_name: marital_name,
+            marital_slug: marital_slug
           })
         });
 
