@@ -7,7 +7,7 @@ import { CloseCircleOutlined, CloseCircleFilled, LoadingOutlined } from "@ant-de
 import { truncate } from "@/utils/globalFunction";
 
 export default function Registration() {
-  const { Search } = Input;
+  const { Search, TextArea } = Input;
   const [regional, setRegional] = useState<boolean>(false);
   const [searchRegional, setSearchRegional] = useState<string>("");
   const [regionalResult, setRegionalResult] = useState<any>(null);
@@ -85,8 +85,8 @@ export default function Registration() {
   ];
   const bloodOptions = [
     {label: "A", value: 1},
-    {label: "B", value: 1},
-    {label: "AB", value: 1}
+    {label: "B", value: 2},
+    {label: "AB", value: 3}
   ];
 
   const requestProvince = async () => {
@@ -240,6 +240,7 @@ export default function Registration() {
   const [maritalStatus, setMaritalStatus] = useState<any>(null);
   const [job, setJob] = useState<any>(null);
   const [education, setEducation] = useState<any>(null);
+  const [blood, setBlood] = useState<any>(null);
 
   const fetchReligion = async () => {
     const request = await fetch("/api/religion");
@@ -377,11 +378,11 @@ export default function Registration() {
           </div>
           <div className="flex flex-col gap-1">
             <span className="font-bold">Alamat</span>
-            {/* <TextArea
+            <TextArea
               maxLength={100}
               value={inputPatient.address}
               onChange={(evt) => handleInputPatient(evt, "address")}
-            /> */}
+            />
           </div>
           {/* Province, Regency, District, Subdistrict */}
           <div className="flex flex-col gap-1">
@@ -468,8 +469,8 @@ export default function Registration() {
             <div className="flex flex-col gap-1">
               <span className="font-bold">Golongan Darah</span>
               <Select
-                value={inputPatient.blood}
-                // onChange={(evt) => handleInputResponsible(evt, "relation")}
+                defaultValue={blood}
+                onChange={(value) => setBlood(value)}
                 allowClear
                 options={bloodOptions}
               />

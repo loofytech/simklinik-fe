@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+.i-pkck {
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  background-color: #ffffff;
+  background-image: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  height: 31.6px;
+  border-radius: 6px;
+  position: relative;
+}
+
+.modal-regional .ant-modal-content {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.modal-regional .ant-modal-content .ant-modal-header {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
 .ps-sidebar-container {
   position: fixed !important;
   width: 250px;
