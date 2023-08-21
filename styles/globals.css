@@ -2,78 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-.ant-layout.ant-layout-has-sider {
-  min-height: 100vh;
-}
-
-.ant-menu-item {
-  border-radius: 4px !important;
-}
-
-.ant-table-thead .ant-table-cell {
-  white-space: nowrap;
-}
-
-/* .ant-radio-wrapper-checked span {
-  font-weight: 700;
-} */
-
-.ant-input-search-button {
-  display: flex;
-  align-items: center;
-  background-color: #1677ff;
-}
-
-.ant-input-search-button:hover {
-  background-color: #1677ff !important;
-}
-
-.i-pkck {
-  color: rgba(0, 0, 0, 0.88);
-  font-size: 14px;
-  line-height: 1.5714285714285714;
-  background-color: #ffffff;
-  background-image: none;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #d9d9d9;
-  height: 31.6px;
-  border-radius: 6px;
-  position: relative;
-}
-
-.ant-dropdown-menu {
-  max-height: 200px;
+.ps-sidebar-container {
+  position: fixed !important;
+  width: 250px;
+  height: 100vh;
+  scrollbar-color: #5558f4 transparent;
   overflow: auto;
 }
 
-.ant-dropdown-menu-submenu-expand-icon span {
-  position: absolute !important;
-  top: 5px;
-  right: 1px;
+.ps-menu-root::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+.ps-menu-root:hover::-webkit-scrollbar-thumb {
+  background-color: #5558f4;
+}
+.ps-menu-root::-webkit-scrollbar {
+  width: 6px;
+  background-color: transparent;
 }
 
-.modal-regional .ant-modal-content {
-  padding-left: 0;
-  padding-right: 0;
+.ps-sidebar-container nav {
+  height: 100vh;
+  width: 100%;
 }
 
-.modal-regional .ant-modal-content .ant-modal-header {
-  padding-left: 24px;
-  padding-right: 24px;
+.ps-menu-button {
+  height: 45px !important;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
-.search-patient .ant-input:disabled:hover {
-  border-color: #d9d9d9;
+.ps-submenu-expand-icon span {
+  width: 8px !important;
+  height: 8px !important;
 }
 
-.search-patient .ant-btn:disabled:hover {
-  background: #EBEBEB !important;
+.ps-open {
+  color: #0f172a;
+  background: #ffffff;
 }
 
-.ant-table-thead tr th {
-  background: #696CFF !important;
-  color: #FFFFFF !important;
-  border-color: #696CFF !important;
-  border-radius: 0 !important;
+.ps-open:hover {
+  background: #ffffff !important;
 }

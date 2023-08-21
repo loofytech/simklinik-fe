@@ -1,21 +1,20 @@
+import { BiDesktop, BiSpreadsheet, BiBox } from "react-icons/bi";
+
 export const items = [
   {
-    key: 'dashboard',
-    icon: 'bx bx-home-circle',
+    icon: <BiDesktop size={20} />,
     label: 'Dashboard',
     path: '/dashboard',
     children: null
   },
   {
-    key: 'pendaftaran',
-    icon: 'bx bx-home-circle',
+    icon: <BiSpreadsheet size={20} />,
     label: 'Pendaftaran',
     path: '/dashboard/registration',
     children: null
   },
   {
-    key: 'datamaster',
-    icon: 'bx bx-layout',
+    icon: <BiBox size={20} />,
     label: 'Data Master',
     path: null,
     children: [

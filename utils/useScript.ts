@@ -19,6 +19,7 @@ export default function useScript(scripts: string[]) {
   const loadScript = (src: any) => {
     const script = document.createElement("script");
     script.src = src;
+    // script.type = "module";
     if (!scriptRefArr.find((item: any) => item.url === src)) {
       document.body.appendChild(script);
       scriptRefArr.push({url: src, script});
