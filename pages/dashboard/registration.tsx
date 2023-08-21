@@ -7,7 +7,7 @@ import { CloseCircleOutlined, CloseCircleFilled, LoadingOutlined } from "@ant-de
 import { truncate } from "@/utils/globalFunction";
 
 export default function Registration() {
-  const { Search, TextArea } = Input;
+  const { Search } = Input;
   const [regional, setRegional] = useState<boolean>(false);
   const [searchRegional, setSearchRegional] = useState<string>("");
   const [regionalResult, setRegionalResult] = useState<any>(null);
@@ -72,13 +72,13 @@ export default function Registration() {
   }
 
   const relationOptions = [
-    {label: "Suami", value: 1},
-    {label: "Istri", value: 2},
-    {label: "Anak", value: 3},
-    {label: "Kakak", value: 4},
-    {label: "Adik", value: 5},
-    {label: "Paman", value: 6},
-    {label: "Bibi", value: 7}
+    {label: "Suami", value: "suami"},
+    {label: "Istri", value: "istri"},
+    {label: "Anak", value: "anak"},
+    {label: "Kakak", value: "kakak"},
+    {label: "Adik", value: "adik"},
+    {label: "Paman", value: "paman"},
+    {label: "Bibi", value: "bibi"}
   ];
   const serviceOptions = [
     {label: "Pemeriksaan Umum", value: 1}
@@ -144,14 +144,23 @@ export default function Registration() {
   const handleResponsible = (evt: CheckboxChangeEvent) => {
     setInputResponsible((prevState: any) => ({
       ...prevState,
-      self: !inputResponsible.self
+      self: evt.target.checked,
+      name: evt.target.checked ? inputPatient.name : "",
+      phone: evt.target.checked ? inputPatient.phone : "",
+      address: evt.target.checked ? inputPatient.address : "",
     }));
   }
 
   const handleInputResponsible = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+    if (name !== "relation") {
+      return setInputResponsible((prevState: any) => ({
+        ...prevState,
+        [name]: evt.target.value
+      }));
+    }
     setInputResponsible((prevState: any) => ({
       ...prevState,
-      [name]: evt.target.value
+      [name]: evt
     }));
   }
 
@@ -335,6 +344,7 @@ export default function Registration() {
           <div className="flex flex-col gap-1">
             <span className="font-bold">Nama Pasien</span>
             <Input
+              id="patient_name"
               showCount
               maxLength={50}
               value={inputPatient.name}
@@ -378,7 +388,8 @@ export default function Registration() {
           </div>
           <div className="flex flex-col gap-1">
             <span className="font-bold">Alamat</span>
-            <TextArea
+            <textarea
+              className="h-16 border rounded-lg overflow-hidden outline-none text-sm p-3"
               maxLength={100}
               value={inputPatient.address}
               onChange={(evt) => handleInputPatient(evt, "address")}
@@ -573,20 +584,20 @@ export default function Registration() {
             <span className="font-bold">Hubungan Keluarga</span>
             <Select
               defaultValue={inputResponsible.relation}
-              // onChange={(evt) => handleInputResponsible(evt, "relation")}
+              onChange={(evt) => handleInputResponsible(evt, "relation")}
               allowClear
               options={relationOptions}
             />
           </div>
           <div className="mt-4 flex flex-col gap-1">
             <span className="font-bold">Alamat</span>
-            {/* <TextArea
-              // showCount
+            <textarea
               maxLength={100}
+              className="h-16 border rounded-lg overflow-hidden outline-none text-sm p-3"
               value={inputResponsible.address}
               onChange={(evt) => handleInputResponsible(evt, "address")}
               disabled={inputResponsible.self}
-            /> */}
+            />
           </div>
         </Card>
         {/* Pelayanan Klinik */}

@@ -1,6 +1,6 @@
 import AppLayout from "@/layouts/AppLayout";
 import { useEffect, useState } from "react";
-import { Table, Modal } from "antd";
+import { Table, Modal, Select } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -26,11 +26,12 @@ export default function RelationAgency() {
   const [loading, setLoading] = useState<boolean>(false);
   const [modalCreate, setModalCreate] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [website, setWebsite] = useState<string>("");
+  const [adminFee, setAdminFee] = useState<string>("");
+  const [maxAdminFee, setMaxAdminFee] = useState<string>("");
+  const [stamp, setStamp] = useState<string>("");
+  const [agency, setAgency] = useState<any>(null);
   const [submit, setSubmit] = useState<boolean>(false);
+  const [agencies, setAgencies] = useState<any>([]);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -68,7 +69,7 @@ export default function RelationAgency() {
   }
 
   const fetchData = async (page?: any) => {
-    const request = await fetch(`/api/relation-agency?page=${page ?? 1}`);
+    const request = await fetch(`/api/insurance-product?page=${page ?? 1}`);
     const response = await request.json();
 
     setData(response.data);
@@ -84,14 +85,14 @@ export default function RelationAgency() {
     event.preventDefault();
     setSubmit(true);
 
-    const request = await fetch(`/api/relation-agency`, {
+    const request = await fetch(`/api/insurance-product`, {
       method: "POST",
       body: JSON.stringify({
-        relation_agency_name: name,
-        relation_agency_address: address,
-        relation_agency_phone: phone,
-        relation_agency_email: email,
-        relation_agency_website: website
+        insurance_product_name: name,
+        insurance_product_admin_fee: adminFee,
+        insurance_product_max_admin_fee: maxAdminFee,
+        insurance_product_stamp: stamp,
+        relation_agency_id: agency
       })
     });
 
@@ -102,8 +103,21 @@ export default function RelationAgency() {
     setSubmit(false);
   }
 
+  const fetchAgency = async () => {
+    const request = await fetch("/api/relation-agency");
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.relation_agency_name, value: dtl.id});
+      });
+      return setAgencies(data);
+    }
+  }
+
   useEffect(() => {
     fetchData();
+    fetchAgency();
   }, []);
 
   return (<AppLayout>
@@ -131,12 +145,11 @@ export default function RelationAgency() {
       <form onSubmit={postData} className="mt-3">
         <div className="mb-3 flex flex-col gap-1.5">
           <label htmlFor="name" className="font-bold">Pilih Instansi</label>
-          <input
-            type="text"
-            className="px-3 border rounded h-10 outline-none"
-            autoComplete="off"
-            value={name}
-            onChange={(evt) => setName(evt.target.value)}
+          <Select
+            defaultValue={agency}
+            onChange={(value) => setAgency(value)}
+            allowClear
+            options={agencies}
           />
         </div>
         <div className="mb-3 flex flex-col gap-1.5">
@@ -155,8 +168,8 @@ export default function RelationAgency() {
             type="text"
             className="px-3 border rounded h-10 outline-none"
             autoComplete="off"
-            value={phone}
-            onChange={(evt) => setPhone(evt.target.value)}
+            value={adminFee}
+            onChange={(evt) => setAdminFee(evt.target.value)}
           />
         </div>
         <div className="mb-3 flex flex-col gap-1.5">
@@ -165,8 +178,18 @@ export default function RelationAgency() {
             type="text"
             className="px-3 border rounded h-10 outline-none"
             autoComplete="off"
-            value={email}
-            onChange={(evt) => setEmail(evt.target.value)}
+            value={maxAdminFee}
+            onChange={(evt) => setMaxAdminFee(evt.target.value)}
+          />
+        </div>
+        <div className="mb-3 flex flex-col gap-1.5">
+          <label htmlFor="email" className="font-bold">Materai</label>
+          <input
+            type="text"
+            className="px-3 border rounded h-10 outline-none"
+            autoComplete="off"
+            value={stamp}
+            onChange={(evt) => setStamp(evt.target.value)}
           />
         </div>
         <button

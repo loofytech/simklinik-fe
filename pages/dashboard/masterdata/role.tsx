@@ -1,16 +1,14 @@
 import AppLayout from "@/layouts/AppLayout";
 import { useEffect, useState } from "react";
-import { Table, Modal, Select } from "antd";
+import { Table, Modal } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { LoadingOutlined } from "@ant-design/icons";
 
 interface DataType {
   id: number;
-  name: string;
-  username: string;
-  email: string;
-  role_id: string;
+  role_name: string;
+  role_slug: string;
 }
 
 interface TableParams {
@@ -20,16 +18,11 @@ interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
-export default function User() {
+export default function Role() {
   const [data, setData] = useState<DataType[]>();
   const [loading, setLoading] = useState<boolean>(false);
   const [modalCreate, setModalCreate] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [role, setRole] = useState<any>(null);
-  const [roles, setRoles] = useState<any>([]);
   const [submit, setSubmit] = useState<boolean>(false);
 
   const [tableParams, setTableParams] = useState<TableParams>({
@@ -44,13 +37,7 @@ export default function User() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA', dataIndex: 'name', sorter: false, render: (value, record) => {
-      return `${value}`;
-    }},
-    {title: 'USERNAME', dataIndex: 'username', sorter: false, render: (value, record) => {
-      return `${value}`;
-    }},
-    {title: 'EMAIL', dataIndex: 'email', sorter: false, render: (value, record) => {
+    {title: 'NAMA ROLE', dataIndex: 'role_name', sorter: false, render: (value, record) => {
       return `${value}`;
     }},
   ]
@@ -65,10 +52,10 @@ export default function User() {
   }
 
   const fetchData = async (page?: any) => {
-    const request = await fetch(`/api/user?page=${page ?? 1}`);
+    const request = await fetch(`/api/role?page=${page ?? 1}`);
     const response = await request.json();
 
-    setData(response.user);
+    setData(response.data);
     setLoading(false);
     setTableParams({pagination: {
       current: response.current_page,
@@ -81,14 +68,11 @@ export default function User() {
     event.preventDefault();
     setSubmit(true);
 
-    const request = await fetch(`/api/user`, {
+    const request = await fetch(`/api/role`, {
       method: "POST",
       body: JSON.stringify({
-        name: name,
-        username: username,
-        email: email,
-        password: password,
-        role_id: role,
+        role_name: name,
+        role_slug: name.split(" ").join("_").toLowerCase(),
       })
     });
 
@@ -99,27 +83,14 @@ export default function User() {
     setSubmit(false);
   }
 
-  const fetchRole = async () => {
-    const request = await fetch("/api/role");
-    if ([200, 201].includes(request.status)) {
-      const response = await request.json();
-      let data: any = [];
-      if (response.data.length > 0) response.data.map((dtl: any) => {
-        data.push({label: dtl.role_name, value: dtl.id});
-      });
-      return setRoles(data);
-    }
-  }
-
   useEffect(() => {
     fetchData();
-    fetchRole();
   }, []);
 
   return (<AppLayout>
     <div className="bg-white">
       <div className="p-3">
-        <button className="px-4 py-2 bg-primary text-white rounded text-xs" type="button" onClick={() => setModalCreate(true)}>Tambah User</button>
+        <button className="px-4 py-2 bg-primary text-white rounded text-xs" type="button" onClick={() => setModalCreate(true)}>Tambah Role</button>
       </div>
       <Table
         bordered
@@ -132,7 +103,7 @@ export default function User() {
       />
     </div>
     <Modal
-      title=""
+      title="Tambah Role"
       centered
       open={modalCreate}
       onCancel={() => setModalCreate(false)}
@@ -140,52 +111,13 @@ export default function User() {
     >
       <form onSubmit={postData} className="mt-3">
         <div className="mb-3 flex flex-col gap-1.5">
-          <label htmlFor="name" className="font-bold">Nama</label>
+          <label htmlFor="name" className="font-bold">Role</label>
           <input
             type="text"
             className="px-3 border rounded h-10 outline-none"
             autoComplete="off"
             value={name}
             onChange={(evt) => setName(evt.target.value)}
-          />
-        </div>
-        <div className="mb-3 flex flex-col gap-1.5">
-          <label htmlFor="username" className="font-bold">Username</label>
-          <input
-            type="text"
-            className="px-3 border rounded h-10 outline-none"
-            autoComplete="off"
-            value={username}
-            onChange={(evt) => setUsername(evt.target.value)}
-          />
-        </div>
-        <div className="mb-3 flex flex-col gap-1.5">
-          <label htmlFor="email" className="font-bold">Email</label>
-          <input
-            type="text"
-            className="px-3 border rounded h-10 outline-none"
-            autoComplete="off"
-            value={email}
-            onChange={(evt) => setEmail(evt.target.value)}
-          />
-        </div>
-        <div className="mb-3 flex flex-col gap-1.5">
-          <label htmlFor="password" className="font-bold">Password</label>
-          <input
-            type="password"
-            className="px-3 border rounded h-10 outline-none"
-            autoComplete="off"
-            value={password}
-            onChange={(evt) => setPassword(evt.target.value)}
-          />
-        </div>
-        <div className="mb-3 flex flex-col gap-1.5">
-          <label htmlFor="name" className="font-bold">Pilih Role</label>
-          <Select
-            defaultValue={role}
-            onChange={(value) => setRole(value)}
-            allowClear
-            options={roles}
           />
         </div>
         <button

@@ -19,6 +19,10 @@ export const items = [
     path: null,
     children: [
       {
+        label: "Role",
+        path: "/dashboard/masterdata/role"
+      },
+      {
         label: "User",
         path: "/dashboard/masterdata/user"
       },
@@ -53,6 +57,14 @@ export const items = [
       {
         label: "Asuransi",
         path: "/dashboard/masterdata/insurance-product"
+      },
+      {
+        label: "Layanan",
+        path: "/dashboard/masterdata/service"
+      },
+      {
+        label: "Unit Layanan",
+        path: "/dashboard/masterdata/unit"
       },
     ]
   }

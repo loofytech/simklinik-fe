@@ -8,24 +8,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (requestMethod) {
       case "GET":
         const {page} = req.query;
-        const requestGet = await fetch(BASE_API + "/insurance-product/?page=" + page);
+        const requestGet = await fetch(BASE_API + "/service/?page=" + page);
         const httpResponse = await requestGet.json();
 
         return res.status(200).json(httpResponse);
       case "POST":
-        const {insurance_product_name, insurance_product_admin_fee, insurance_product_max_admin_fee, insurance_product_stamp, relation_agency_id} = JSON.parse(req.body);
-        const requestPost = await fetch(BASE_API + "/insurance-product", {
+        const {service_name, service_slug} = JSON.parse(req.body);
+        const requestPost = await fetch(BASE_API + "/service", {
           method: "POST",
           headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            insurance_product_name: insurance_product_name,
-            insurance_product_admin_fee: parseInt(insurance_product_admin_fee),
-            insurance_product_max_admin_fee: parseInt(insurance_product_max_admin_fee),
-            insurance_product_stamp: parseInt(insurance_product_stamp),
-            relation_agency_id: relation_agency_id
+            service_name: service_name,
+            service_slug: service_slug
           })
         });
 
