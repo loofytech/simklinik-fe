@@ -4,14 +4,14 @@ import { Table, Modal, Select } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { LoadingOutlined } from "@ant-design/icons";
+import { formatIDR } from "@/utils/globalFunction";
 
 interface DataType {
   id: number;
-  relation_agency_name: string;
-  relation_agency_address: string;
-  relation_agency_phone: string;
-  relation_agency_email: string;
-  relation_agency_website: string;
+  insurance_product_name: string;
+  insurance_product_admin_fee: string;
+  insurance_product_max_admin_fee: string;
+  insurance_product_stamp: string;
 }
 
 interface TableParams {
@@ -45,18 +45,15 @@ export default function RelationAgency() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA INSTANSI', dataIndex: 'relation_agency_name', sorter: false, render: (value, record) => {
-      return `${value}`;
+    {title: 'NAMA ASURANSI', dataIndex: 'insurance_product_name', sorter: false, render: (value, record) => {
+      return `Rp ${formatIDR(value)}`;
     }},
-    {title: 'TELEPON', dataIndex: 'relation_agency_phone', sorter: false, render: (value, record) => {
-      return `${value}`;
+    {title: 'ADMIN FEE', dataIndex: 'insurance_product_admin_fee', sorter: false, render: (value, record) => {
+      return `Rp ${formatIDR(value)}`;
     }},
-    {title: 'EMAIL', dataIndex: 'relation_agency_email', sorter: false, render: (value, record) => {
-      return `${value}`;
-    }},
-    {title: 'WEBSITE', dataIndex: 'relation_agency_website', sorter: false, render: (value, record) => {
-      return `${value}`;
-    }},
+    {title: 'MATERAI', dataIndex: 'insurance_product_stamp', sorter: false, render: (value, record) => {
+      return `Rp ${formatIDR(value)}`;
+    }}
   ]
 
   const handleTableChange = (pagination: TablePaginationConfig) => {

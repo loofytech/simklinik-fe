@@ -122,7 +122,7 @@ export default function RelationAgency() {
       />
     </div>
     <Modal
-      title="Tambah Instansi Relasi"
+      title=""
       centered
       open={modalCreate}
       onCancel={() => setModalCreate(false)}

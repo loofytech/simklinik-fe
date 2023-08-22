@@ -47,10 +47,6 @@ export const items = [
         path: "/dashboard/masterdata/education"
       },
       {
-        label: "Pendidikan",
-        path: "/dashboard/masterdata/education"
-      },
-      {
         label: "Instansi Relasi",
         path: "/dashboard/masterdata/relation-agency"
       },

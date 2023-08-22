@@ -90,7 +90,7 @@ export default function Education() {
   return (<AppLayout>
     <div className="bg-white">
       <div className="p-3">
-        <button className="px-4 py-2 bg-primary text-white rounded" type="button" onClick={() => setModalCreate(true)}>Tambah Pendidikan</button>
+        <button className="px-4 py-2 bg-primary text-white rounded text-sm" type="button" onClick={() => setModalCreate(true)}>Tambah Pendidikan</button>
       </div>
       <Table
         bordered

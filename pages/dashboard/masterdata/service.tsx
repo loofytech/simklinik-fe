@@ -94,7 +94,7 @@ export default function Service() {
   return (<AppLayout>
     <div className="bg-white">
       <div className="p-3">
-        <button className="px-4 py-2 bg-primary text-white rounded text-xs" type="button" onClick={() => setModalCreate(true)}>Tambah Layanan</button>
+        <button className="px-4 py-2 bg-primary text-white rounded text-sm" type="button" onClick={() => setModalCreate(true)}>Tambah Layanan</button>
       </div>
       <Table
         bordered
