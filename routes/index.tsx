@@ -62,6 +62,10 @@ export const items = [
         label: "Unit Layanan",
         path: "/dashboard/masterdata/unit"
       },
+      {
+        label: "Jadwal Dokter",
+        path: "/dashboard/masterdata/doctor-schedule"
+      },
     ]
   }
 ];

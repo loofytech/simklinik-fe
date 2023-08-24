@@ -7,8 +7,8 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 interface DataType {
   id: number;
-  service_name: string;
-  service_slug: string;
+  unit_name: string;
+  unit_slug: string;
 }
 
 interface TableParams {
@@ -39,7 +39,7 @@ export default function Unit() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA LAYANAN', dataIndex: 'service_name', sorter: false, render: (value, record) => {
+    {title: 'NAMA UNIT', dataIndex: 'unit_name', sorter: false, render: (value, record) => {
       return `${value}`;
     }},
   ]
@@ -73,8 +73,9 @@ export default function Unit() {
     const request = await fetch(`/api/unit`, {
       method: "POST",
       body: JSON.stringify({
-        unit: name,
+        unit_name: name,
         unit_slug: name.split(" ").join("_").toLowerCase(),
+        service_id: service
       })
     });
 

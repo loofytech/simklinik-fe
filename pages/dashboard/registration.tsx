@@ -13,44 +13,9 @@ export default function Registration() {
   const [regionalResult, setRegionalResult] = useState<any>(null);
 
   const [search, setSearch] = useState<boolean>(false);
-  const [payment, setPayment] = useState<number>(0);
   const [patientNew, setPatientNew] = useState<number>(0);
 
   const [submitRegistration, setSubmitRegistration] = useState<boolean>(false);
-
-  const [inputResponsible, setInputResponsible] = useState<any>({
-    self: false,
-    name: "",
-    phone: "",
-    address: "",
-    relation: ""
-  });
-  const [inputService, setInputService] = useState<any>({
-    service: "",
-    unit: "",
-    doctor: ""
-  });
-  const [inputPatient, setInputPatient] = useState<any>({
-    name: "",
-    phone: "",
-    nik: "",
-    place_of_birth: "",
-    date_of_birth: "",
-    address: "",
-    blood: "",
-    religion: "",
-    gender: "",
-    ethnic: "",
-    marital_status: "",
-    job: "",
-    last_education: ""
-  });
-  const [inputPatientRegional, setInputPatientRegional] = useState<any>({
-    province: null,
-    regency: null,
-    district: null,
-    subDistrict: null
-  });
 
   const showModal = async () => {
     setRegional(true);
@@ -72,6 +37,7 @@ export default function Registration() {
   }
 
   const relationOptions = [
+    {label: "Pasien Sendiri", value: "self"},
     {label: "Suami", value: "suami"},
     {label: "Istri", value: "istri"},
     {label: "Anak", value: "anak"},
@@ -80,13 +46,11 @@ export default function Registration() {
     {label: "Paman", value: "paman"},
     {label: "Bibi", value: "bibi"}
   ];
-  const serviceOptions = [
-    {label: "Pemeriksaan Umum", value: 1}
-  ];
+
   const bloodOptions = [
-    {label: "A", value: 1},
-    {label: "B", value: 2},
-    {label: "AB", value: 3}
+    {label: "A", value: "A"},
+    {label: "B", value: "B"},
+    {label: "AB", value: "AB"}
   ];
 
   const requestProvince = async () => {
@@ -133,12 +97,11 @@ export default function Registration() {
     return setRegionalResult(response.data);
   }
 
-  const handlePaymentChange = (evt: RadioChangeEvent) => {
-    setPayment(evt.target.value);
-  }
-
   const handlePatientNewChange = (evt: RadioChangeEvent) => {
     setPatientNew(evt.target.value);
+    if (evt.target.value == 0) {
+      setMedicalRecord(null);
+    }
   }
 
   const handleResponsible = (evt: CheckboxChangeEvent) => {
@@ -148,6 +111,7 @@ export default function Registration() {
       name: evt.target.checked ? inputPatient.name : "",
       phone: evt.target.checked ? inputPatient.phone : "",
       address: evt.target.checked ? inputPatient.address : "",
+      relation: evt.target.checked ? "self" : ""
     }));
   }
 
@@ -238,6 +202,32 @@ export default function Registration() {
     }
   }
 
+  const [payment, setPayment] = useState<number>(0);
+  const [insurance, setInsurance] = useState<any>(null);
+  const [noInsurance, setNoInsurance] = useState<string>("");
+  const [insurances, setInsurances] = useState<any>([]);
+
+  const handlePaymentChange = (evt: RadioChangeEvent) => {
+    setPayment(evt.target.value);
+    setInsurance(null);
+    setNoInsurance("");
+    if (evt.target.value == 2) {
+      getInsurance();
+    }
+  }
+
+  const getInsurance = async () => {
+    const request = await fetch("/api/insurance-product");
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.insurance_product_name, value: dtl.id});
+      });
+      return setInsurances(data);
+    }
+  }
+
   const [religions, setReligions] = useState<any>([]);
   const [ethnics, setEthnics] = useState<any>([]);
   const [maritalStatuses, setMaritalStatuses] = useState<any>([]);
@@ -250,6 +240,12 @@ export default function Registration() {
   const [job, setJob] = useState<any>(null);
   const [education, setEducation] = useState<any>(null);
   const [blood, setBlood] = useState<any>(null);
+  const [services, setServices] = useState<any>([]);
+  const [service, setService] = useState<any>(null);
+  const [units, setUnits] = useState<any>([]);
+  const [unit, setUnit] = useState<any>(null);
+  const [doctors, setDoctors] = useState<any>([]);
+  const [doctor, setDoctor] = useState<any>(null);
 
   const fetchReligion = async () => {
     const request = await fetch("/api/religion");
@@ -311,13 +307,124 @@ export default function Registration() {
     }
   }
 
+  const fetchService = async () => {
+    const request = await fetch("/api/service");
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.service_name, value: dtl.id});
+      });
+      return setServices(data);
+    }
+  }
+
+  const handleServiceChange = async (value: any) => {
+    setService(value)
+    const request = await fetch("/api/unit", {method: "PUT", body: JSON.stringify({service: value})});
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.unit_name, value: dtl.id});
+      });
+      return setUnits(data);
+    }
+  }
+
+  const handleUnitChange = async (value: any) => {
+    setUnit(value);
+    const request = await fetch("/api/doctor-schedule", {method: "PUT", body: JSON.stringify({unit: value})});
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      let data: any = [];
+      if (response.data.length > 0) response.data.map((dtl: any) => {
+        data.push({label: dtl.user.name, value: dtl.user_id});
+      });
+      return setDoctors(data);
+    }
+  }
+
   useEffect(() => {
     fetchReligion();
     fetchEthnic();
     fetchMaritalStatus();
     fetchJob();
     fetchEducation();
+    fetchService()
   }, []);
+
+  const [medicalRecord, setMedicalRecord] = useState<any>(null);
+
+  const [inputPatient, setInputPatient] = useState<any>({
+    name: "",
+    phone: "",
+    nik: "",
+    place_of_birth: "",
+    date_of_birth: "",
+    address: ""
+  });
+
+  const [inputResponsible, setInputResponsible] = useState<any>({
+    self: false,
+    name: "",
+    phone: "",
+    address: "",
+    relation: ""
+  });
+
+  const [inputPatientRegional, setInputPatientRegional] = useState<any>({
+    province: null,
+    regency: null,
+    district: null,
+    subDistrict: null
+  });
+
+  const postRegistration = async () => {
+    setSubmitRegistration(true);
+    const request = await fetch("/api/registration", {
+      method: "POST",
+      body: JSON.stringify({
+        medical_record: medicalRecord,
+        patient_name: inputPatient.name,
+        patient_address: inputPatient.address,
+        patient_phone: inputPatient.phone,
+        patient_nik: inputPatient.nik,
+        birth_place: inputPatient.place_of_birth,
+        birth_date: inputPatient.date_of_birth,
+        patient_gender: gender,
+        patient_blood_type: blood,
+        province: inputPatientRegional.province?.name,
+        regency: inputPatientRegional.regency?.name,
+        district: inputPatientRegional.district?.name,
+        sub_district: inputPatientRegional.subDistrict?.name,
+        job_id: job,
+        ethnic_id: ethnic,
+        religion_id: religion,
+        education_id: education,
+        marital_status: maritalStatus,
+        responsible_name: inputResponsible.name,
+        responsible_phone: inputResponsible.phone,
+        responsible_address: inputResponsible.address,
+        responsible_relation: inputResponsible.relation,
+        service_id: service,
+        unit_id: unit,
+        user_id: doctor
+      })
+    });
+    if ([200, 201].includes(request.status)) {
+      const response = await request.json();
+      console.log(response);
+      // let data: any = [];
+      // if (response.data.length > 0) response.data.map((dtl: any) => {
+      //   data.push({label: dtl.service_name, value: dtl.id});
+      // });
+      // return setServices(data);
+    }
+    setTimeout(() => {
+      setSubmitRegistration(false);
+    }, 2000);
+  }
 
   return (<AppLayout>
     <div className="grid grid-cols-2 gap-6">
@@ -335,8 +442,9 @@ export default function Registration() {
           enterButton={"Cari Pasien"}
           size="large"
           className="search-patient"
-          // onClick={handleSearch}
           onPressEnter={handleSearch}
+          onChange={(evt) => setMedicalRecord(evt.target.value)}
+          value={medicalRecord}
           disabled={search || patientNew == 0}
           loading={search}
         />
@@ -553,7 +661,26 @@ export default function Registration() {
             <Radio value={1}>Bayar Sendiri</Radio>
             <Radio value={2}>Asuransi</Radio>
           </Radio.Group>
-          {/* <div>asd</div> */}
+          {payment == 2 && <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="mb-3 md:mb-0 flex flex-col gap-1.5">
+              <label htmlFor="name" className="font-bold">Pilih Asuransi</label>
+              <Select
+                defaultValue={insurance}
+                onChange={(value) => setInsurance(value)}
+                options={insurances}
+              />
+            </div>
+            <div className="mb-3 md:mb-0 flex flex-col gap-1.5">
+              <label htmlFor="name" className="font-bold">No Asuransi</label>
+              <Input
+                id="no_insurance"
+                showCount
+                maxLength={50}
+                value={noInsurance}
+                onChange={(evt) => setNoInsurance(evt.target.value)}
+              />
+            </div>
+          </div>}
         </Card>
         {/* Penanggung Jawab */}
         <Card title="Penanggung Jawab" bordered={false}>
@@ -584,9 +711,10 @@ export default function Registration() {
             <span className="font-bold">Hubungan Keluarga</span>
             <Select
               defaultValue={inputResponsible.relation}
+              value={inputResponsible.relation}
               onChange={(evt) => handleInputResponsible(evt, "relation")}
-              allowClear
               options={relationOptions}
+              disabled={inputResponsible.self}
             />
           </div>
           <div className="mt-4 flex flex-col gap-1">
@@ -605,28 +733,25 @@ export default function Registration() {
           <div className="flex flex-col gap-1">
             <span className="font-bold">Layanan</span>
             <Select
-              defaultValue={inputService.service}
-              // onChange={(evt) => handleInputResponsible(evt, "relation")}
-              allowClear
-              options={serviceOptions}
+              defaultValue={service}
+              onChange={(evt) => handleServiceChange(evt)}
+              options={services}
             />
           </div>
           <div className="mt-4 flex flex-col gap-1">
             <span className="font-bold">Unit</span>
             <Select
-              defaultValue={inputService.service}
-              // onChange={(evt) => handleInputResponsible(evt, "relation")}
-              allowClear
-              options={serviceOptions}
+              defaultValue={unit}
+              onChange={(evt) => handleUnitChange(evt)}
+              options={units}
             />
           </div>
           <div className="mt-4 flex flex-col gap-1">
             <span className="font-bold">Dokter</span>
             <Select
-              defaultValue={inputService.service}
-              // onChange={(evt) => handleInputResponsible(evt, "relation")}
-              allowClear
-              options={serviceOptions}
+              defaultValue={doctor}
+              onChange={(evt) => setDoctor(evt)}
+              options={doctors}
             />
           </div>
         </Card>
@@ -634,7 +759,7 @@ export default function Registration() {
           <button
             type="button"
             className="bg-primary flex justify-center items-center gap-2 text-white font-bold py-2 rounded disabled:bg-blue-400"
-            onClick={() => setSubmitRegistration(true)}
+            onClick={postRegistration}
             disabled={submitRegistration}
           >
             {submitRegistration && <LoadingOutlined style={{fontSize: 16}} />}

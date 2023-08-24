@@ -69,3 +69,7 @@
 .ps-open:hover {
   background: #ffffff !important;
 }
+
+.ant-btn-primary:not(:disabled) {
+  background-color: #696cff !important;
+}
