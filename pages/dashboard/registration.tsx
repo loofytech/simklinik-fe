@@ -62,7 +62,7 @@ export default function Registration() {
         birth_place: birth_place,
         birth_date: birth_date,
         patient_gender: patient_gender,
-        patient_blood_type: patient_blood_type,
+        // patient_blood_type: patient_blood_type,
         province: province?.name,
         regency: regency?.name,
         district: district?.name,

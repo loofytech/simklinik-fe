@@ -1,4 +1,4 @@
-import { BiDesktop, BiSpreadsheet, BiBox } from "react-icons/bi";
+import { BiDesktop, BiSpreadsheet, BiBox, BiFirstAid } from "react-icons/bi";
 
 export const items = [
   {
@@ -67,5 +67,20 @@ export const items = [
         path: "/dashboard/masterdata/doctor-schedule"
       },
     ]
-  }
+  },
+  {
+    icon: <BiFirstAid size={20} />,
+    label: "Pelayanan Umum",
+    path: null,
+    children: [
+      {
+        label: "Skrining",
+        path: "/dashboard/public-service/screening"
+      },
+      {
+        label: "Pemeriksaan Pasien",
+        path: ""
+      }
+    ]
+  },
 ];

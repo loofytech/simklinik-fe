@@ -115,7 +115,7 @@ export default function Unit() {
       const response = await request.json();
       let data: any = [];
       if (response.user.length > 0) response.user.map((dtl: any) => {
-        if (dtl.role_id == 2) {
+        if (dtl.role_id == 3) {
           data.push({label: dtl.name, value: dtl.id});
         }
       });

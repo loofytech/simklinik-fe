@@ -9,7 +9,7 @@ export default function Menubar() {
   return (<>
     <Sidebar>
       <Menu className="text-sm bg-primary text-white overflow-auto h-screen">
-        <div className="p-5 text-lg">Logo App</div>
+        <div className="p-5 text-lg">Loofy Klinik</div>
         {items.map((iMenu: any, iKey: number) => {
           if (!iMenu.children) {
             return (<MenuItem
