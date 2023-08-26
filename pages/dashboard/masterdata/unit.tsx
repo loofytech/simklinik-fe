@@ -39,8 +39,13 @@ export default function Unit() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA UNIT', dataIndex: 'unit_name', sorter: false, render: (value, record) => {
+    {title: 'NAMA UNIT', dataIndex: 'unit_name', className: "w-8/12", sorter: false, render: (value, record) => {
       return `${value}`;
+    }},
+    {title: 'AKSI', dataIndex: 'id', sorter: false, render: (value, record) => {
+      return (<>
+        <button type="button" className="px-3 py-1.5 bg-green-400 font-bold text-white rounded text-xs">Update</button>
+      </>);
     }},
   ]
 

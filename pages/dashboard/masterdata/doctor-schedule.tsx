@@ -58,6 +58,11 @@ export default function Unit() {
     {title: 'PRAKTEK', dataIndex: 'open_practice', sorter: false, render: (value, record) => {
       return `${record.day.charAt(0).toUpperCase() + record.day.slice(1)}, ${value} - ${record.close_practice}`;
     }},
+    {title: 'AKSI', dataIndex: 'id', sorter: false, render: (value, record) => {
+      return (<>
+        <button type="button" className="px-3 py-1.5 bg-green-400 font-bold text-white rounded text-xs">Update</button>
+      </>);
+    }},
   ]
 
   const handleTableChange = (pagination: TablePaginationConfig) => {

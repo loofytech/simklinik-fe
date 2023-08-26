@@ -53,7 +53,12 @@ export default function RelationAgency() {
     }},
     {title: 'MATERAI', dataIndex: 'insurance_product_stamp', sorter: false, render: (value, record) => {
       return `Rp ${formatIDR(value)}`;
-    }}
+    }},
+    {title: 'AKSI', dataIndex: 'id', sorter: false, render: (value, record) => {
+      return (<>
+        <button type="button" className="px-3 py-1.5 bg-green-400 font-bold text-white rounded text-xs">Update</button>
+      </>);
+    }},
   ]
 
   const handleTableChange = (pagination: TablePaginationConfig) => {

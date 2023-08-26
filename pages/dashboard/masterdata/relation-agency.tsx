@@ -56,6 +56,11 @@ export default function RelationAgency() {
     {title: 'WEBSITE', dataIndex: 'relation_agency_website', sorter: false, render: (value, record) => {
       return `${value}`;
     }},
+    {title: 'AKSI', dataIndex: 'id', sorter: false, render: (value, record) => {
+      return (<>
+        <button type="button" className="px-3 py-1.5 bg-green-400 font-bold text-white rounded text-xs">Update</button>
+      </>);
+    }},
   ]
 
   const handleTableChange = (pagination: TablePaginationConfig) => {
