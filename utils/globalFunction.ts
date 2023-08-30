@@ -9,3 +9,10 @@ export const formatIDR = (param: string | number) => {
   let format = param.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   return format;
 }
+
+export const calculateAge = (dateString: string) => {
+  const today = new Date();
+  const paramDate = new Date(dateString);
+  const age = today.getFullYear() - paramDate.getFullYear();
+  return age;
+}

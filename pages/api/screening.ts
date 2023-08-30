@@ -13,23 +13,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         return res.status(200).json(httpResponse);
       case "POST":
-        const {ethnic_name, ethnic_slug} = JSON.parse(req.body);
-        const requestPost = await fetch(BASE_API + "/ethnic/create", {
-          method: "POST",
-          headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            ethnic_name: ethnic_name,
-            ethnic_slug: ethnic_slug
-          })
-        });
+        const {screening_id} = JSON.parse(req.body);
+        const requestPost = await fetch(BASE_API + "/screening/" + screening_id);
 
         if ([200, 201].includes(requestPost.status)) {
-          return res.status(200).json({message: "Submit OK!"});
+          return res.status(200).json(await requestPost.json());
         }
-        return res.status(400).json({message: "Submit FAILED!"});
+        return res.status(400).json({message: "no data"});
       default:
         return res.status(200).json({message: "Hello World"});
     }

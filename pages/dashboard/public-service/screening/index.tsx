@@ -7,12 +7,12 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { BiMinus } from "react-icons/bi";
 import dayjs from "dayjs";
 import "dayjs/locale/id";
+import Link from "next/link";
 dayjs.locale("id");
 
 interface DataType {
   id: number;
-  ethnic_name: string;
-  ethnic_slug: string;
+  patient: any;
 }
 
 interface TableParams {
@@ -42,12 +42,21 @@ export default function Screening() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NAMA', dataIndex: 'ethnic_name', className: "w-8/12", sorter: false, render: (value, record) => {
-      return `${value}`;
+    {title: 'NO. RM', dataIndex: 'patient', sorter: false, render: (value, record) => {
+      return `${value?.medical_record}`;
+    }},
+    {title: 'NAMA', dataIndex: 'patient', sorter: false, render: (value, record) => {
+      return `${value?.patient_name}`;
     }},
     {title: 'AKSI', dataIndex: 'id', sorter: false, render: (value, record) => {
       return (<>
-        <button type="button" className="px-3 py-1.5 bg-green-400 font-bold text-white rounded text-xs">Update</button>
+        <Link
+          href={"/dashboard/public-service/screening/" + value}
+          type="button"
+          className="px-3 py-1.5 bg-green-400 font-bold text-white rounded text-xs hover:text-white"
+        >
+          Skrining
+        </Link>
       </>);
     }},
   ]

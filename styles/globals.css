@@ -73,3 +73,25 @@
 .ant-btn-primary:not(:disabled) {
   background-color: #696cff !important;
 }
+
+.sc-select .ant-select-selector {
+  border: 0 !important;
+  height: 100% !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+}
+
+.sc-select {
+  overflow: hidden !important;
+  height: 2.5rem;
+}
+
+.sc-select .ant-select-selector input {
+  height: 100% !important;
+}
+
+.sc-select .ant-select-selector .ant-select-selection-item,
+.sc-select .ant-select-selector .ant-select-selection-placeholder {
+  display: flex;
+  align-items: center;
+}

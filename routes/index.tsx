@@ -79,7 +79,7 @@ export const items = [
       },
       {
         label: "Pemeriksaan Pasien",
-        path: ""
+        path: "/dashboard/public-service/inspection"
       }
     ]
   },
