@@ -37,9 +37,11 @@
 .ps-menu-root::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
+
 .ps-menu-root:hover::-webkit-scrollbar-thumb {
   background-color: #5558f4;
 }
+
 .ps-menu-root::-webkit-scrollbar {
   width: 6px;
   background-color: transparent;
@@ -68,6 +70,11 @@
 
 .ps-open:hover {
   background: #ffffff !important;
+}
+
+.ps-active {
+  background: #ffffff;
+  color: #000;
 }
 
 .ant-btn-primary:not(:disabled) {

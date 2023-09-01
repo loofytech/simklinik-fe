@@ -8,11 +8,12 @@ const font = Roboto({weight: "400", subsets: ["latin"]});
 
 interface LProps {
   children: React.ReactNode;
+  active?: string;
 }
 
-export default function AppLayout({children}: LProps) {
+export default function AppLayout({children, active}: LProps) {
   return (<div className={`${font.className} flex`}>
-    <Menubar />
+    <Menubar active={active} />
     <div className="w-full bg-soft min-h-screen">
       <Topbar />
       <div className="p-5">{children}</div>

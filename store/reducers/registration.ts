@@ -27,7 +27,8 @@ const registrationSlice = createSlice({
     responsible_relation: null,
     service_id: null,
     unit_id: null,
-    user_id: null
+    user_id: null,
+    payment_id: null
   },
   reducers: {
     SET_MEDICAL_RECORD: (state, param) => {
@@ -104,6 +105,9 @@ const registrationSlice = createSlice({
     },
     SET_USER_ID: (state, param) => {
       state.user_id = param.payload;
+    },
+    SET_PAYMENT_ID: (state, param) => {
+      state.payment_id = param.payload;
     }
   }
 });
@@ -133,7 +137,8 @@ export const {
   SET_RESPONSIBLE_RELATION,
   SET_SERVICE_ID,
   SET_UNIT_ID,
-  SET_USER_ID
+  SET_USER_ID,
+  SET_PAYMENT_ID
 } = registrationSlice.actions;
 
 export default registrationSlice.reducer;

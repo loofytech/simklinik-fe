@@ -32,11 +32,52 @@ export default function FormPatient() {
   const [regional, setRegional] = useState<boolean>(false);
   const [regionalResult, setRegionalResult] = useState<any>([]);
   const [searchRegional, setSearchRegional] = useState<string>("");
-  const [jobs, setJobs] = useState<any>([]);
-  const [educations, setEducations] = useState<any>([]);
-  const [religions, setReligions] = useState<any>([]);
-  const [ethnics, setEthnics] = useState<any>([]);
-  const [maritalStatuses, setMaritalStatuses] = useState<any>([]);
+
+  const [jobs, setJobs] = useState<any>([
+    {label: "Memilih Tidak Menjawab", value: "Memilih Tidak Menjawab"},
+    {label: "Karyawan Swasta", value: "Karyawan Swasta"},
+    {label: "Wirausahawan", value: "Wirausahawan"},
+  ]);
+
+  const [educations, setEducations] = useState<any>([
+    {label: "Memilih Tidak Menjawab", value: "Memilih Tidak Menjawab"},
+    {label: "SD", value: "SD"},
+    {label: "SMP", value: "SMP"},
+    {label: "SMA/SMK", value: "SMA/SMK"},
+    {label: "D3", value: "D3"},
+    {label: "S1", value: "S1"},
+    {label: "S2", value: "S2"},
+    {label: "S3", value: "S3"},
+  ]);
+
+  const [religions, setReligions] = useState<any>([
+    {label: "Islam", value: "Islam"},
+    {label: "Kristen", value: "Kristen"},
+    {label: "Budha", value: "Budha"},
+    {label: "Konghucu", value: "Konghucu"},
+  ]);
+
+  const [ethnics, setEthnics] = useState<any>([
+    {label: "Memilih Tidak Menjawab", value: "Memilih Tidak Menjawab"},
+    {label: "Jawa", value: "Jawa"},
+    {label: "Sunda", value: "Sunda"},
+    {label: "Baduy", value: "Baduy"},
+  ]);
+
+  const [maritalStatuses, setMaritalStatuses] = useState<any>([
+    {label: "Memilih Tidak Menjawab", value: "Memilih Tidak Menjawab"},
+    {label: "Menikah", value: "Menikah"},
+    {label: "Belum Menikah", value: "Belum Menikah"},
+    {label: "Menjanda", value: "Menjanda"},
+    {label: "Menduda", value: "Menduda"},
+  ]);
+
+  const bloodOptions = [
+    {label: "A", value: "A"},
+    {label: "B", value: "B"},
+    {label: "AB", value: "AB"}
+  ];
+
   const [localRegional, setLocalRegional] = useState<any>({
     province: null,
     regency: null,
@@ -61,12 +102,6 @@ export default function FormPatient() {
     marital_status,
   } = useSelector((state: any) => state.registration);
   const dispatch = useDispatch();
-
-  const bloodOptions = [
-    {label: "A", value: "A"},
-    {label: "B", value: "B"},
-    {label: "AB", value: "AB"}
-  ];
 
   const handlePatientExist = (evt: RadioChangeEvent) => {
     setPatientExist(evt.target.value);
@@ -150,65 +185,65 @@ export default function FormPatient() {
     }));
   }
 
-  const fetchReligion = async () => {
-    const request = await fetch("/api/religion");
-    if ([200, 201].includes(request.status)) {
-      const response = await request.json();
-      let data: any = [];
-      if (response.data.length > 0) response.data.map((dtl: any) => {
-        data.push({label: dtl.religion_name, value: dtl.id});
-      });
-      return setReligions(data);
-    }
-  }
+  // const fetchReligion = async () => {
+  //   const request = await fetch("/api/religion");
+  //   if ([200, 201].includes(request.status)) {
+  //     const response = await request.json();
+  //     let data: any = [];
+  //     if (response.data.length > 0) response.data.map((dtl: any) => {
+  //       data.push({label: dtl.religion_name, value: dtl.id});
+  //     });
+  //     return setReligions(data);
+  //   }
+  // }
 
-  const fetchEthnic = async () => {
-    const request = await fetch("/api/ethnic");
-    if ([200, 201].includes(request.status)) {
-      const response = await request.json();
-      let data: any = [];
-      if (response.data.length > 0) response.data.map((dtl: any) => {
-        data.push({label: dtl.ethnic_name, value: dtl.id});
-      });
-      return setEthnics(data);
-    }
-  }
+  // const fetchEthnic = async () => {
+  //   const request = await fetch("/api/ethnic");
+  //   if ([200, 201].includes(request.status)) {
+  //     const response = await request.json();
+  //     let data: any = [];
+  //     if (response.data.length > 0) response.data.map((dtl: any) => {
+  //       data.push({label: dtl.ethnic_name, value: dtl.id});
+  //     });
+  //     return setEthnics(data);
+  //   }
+  // }
 
-  const fetchMaritalStatus = async () => {
-    const request = await fetch("/api/marital-status");
-    if ([200, 201].includes(request.status)) {
-      const response = await request.json();
-      let data: any = [];
-      if (response.data.length > 0) response.data.map((dtl: any) => {
-        data.push({label: dtl.marital_name, value: dtl.id});
-      });
-      return setMaritalStatuses(data);
-    }
-  }
+  // const fetchMaritalStatus = async () => {
+  //   const request = await fetch("/api/marital-status");
+  //   if ([200, 201].includes(request.status)) {
+  //     const response = await request.json();
+  //     let data: any = [];
+  //     if (response.data.length > 0) response.data.map((dtl: any) => {
+  //       data.push({label: dtl.marital_name, value: dtl.id});
+  //     });
+  //     return setMaritalStatuses(data);
+  //   }
+  // }
 
-  const fetchJob = async () => {
-    const request = await fetch("/api/job");
-    if ([200, 201].includes(request.status)) {
-      const response = await request.json();
-      let data: any = [];
-      if (response.data.length > 0) response.data.map((dtl: any) => {
-        data.push({label: dtl.job_name, value: dtl.id});
-      });
-      return setJobs(data);
-    }
-  }
+  // const fetchJob = async () => {
+  //   const request = await fetch("/api/job");
+  //   if ([200, 201].includes(request.status)) {
+  //     const response = await request.json();
+  //     let data: any = [];
+  //     if (response.data.length > 0) response.data.map((dtl: any) => {
+  //       data.push({label: dtl.job_name, value: dtl.id});
+  //     });
+  //     return setJobs(data);
+  //   }
+  // }
 
-  const fetchEducation = async () => {
-    const request = await fetch("/api/education");
-    if ([200, 201].includes(request.status)) {
-      const response = await request.json();
-      let data: any = [];
-      if (response.data.length > 0) response.data.map((dtl: any) => {
-        data.push({label: dtl.education_name, value: dtl.id});
-      });
-      return setEducations(data);
-    }
-  }
+  // const fetchEducation = async () => {
+  //   const request = await fetch("/api/education");
+  //   if ([200, 201].includes(request.status)) {
+  //     const response = await request.json();
+  //     let data: any = [];
+  //     if (response.data.length > 0) response.data.map((dtl: any) => {
+  //       data.push({label: dtl.education_name, value: dtl.id});
+  //     });
+  //     return setEducations(data);
+  //   }
+  // }
 
   const requestProvince = async () => {
     const http = await fetch(process.env.NEXT_PUBLIC_GO_API + "/provinsi", {
@@ -255,11 +290,11 @@ export default function FormPatient() {
   }
 
   useEffect(() => {
-    fetchReligion();
-    fetchEthnic();
-    fetchMaritalStatus();
-    fetchJob();
-    fetchEducation();
+    // fetchReligion();
+    // fetchEthnic();
+    // fetchMaritalStatus();
+    // fetchJob();
+    // fetchEducation();
   }, []);
 
   return (<>
@@ -420,7 +455,7 @@ export default function FormPatient() {
           </Modal>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-1">
+          {/* <div className="flex flex-col gap-1">
             <span className="font-bold">Golongan Darah</span>
             <Select
               defaultValue={patient_blood_type}
@@ -428,7 +463,7 @@ export default function FormPatient() {
               allowClear
               options={bloodOptions}
             />
-          </div>
+          </div> */}
           <div className="flex flex-col gap-1">
             <span className="font-bold">Agama</span>
             <Select
@@ -459,15 +494,15 @@ export default function FormPatient() {
               options={ethnics}
             />
           </div>
-        </div>
-        <div className="flex flex-col gap-1">
-          <span className="font-bold">Status Pernikahan</span>
-          <Select
-            defaultValue={marital_status}
-            onChange={(value) => dispatch(SET_MARITAL_STATUS(value))}
-            allowClear
-            options={maritalStatuses}
-          />
+          <div className="flex flex-col gap-1">
+            <span className="font-bold">Status Pernikahan</span>
+            <Select
+              defaultValue={marital_status}
+              onChange={(value) => dispatch(SET_MARITAL_STATUS(value))}
+              allowClear
+              options={maritalStatuses}
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-1">
           <span className="font-bold">Pekerjaan</span>

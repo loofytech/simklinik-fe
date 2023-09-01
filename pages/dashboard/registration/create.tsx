@@ -7,10 +7,12 @@ import FormService from "@/components/Registration/FormService";
 import { useSelector } from "react-redux";
 import { LoadingOutlined } from "@ant-design/icons";
 import { notification } from "antd";
+import { useRouter } from "next/router";
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 export default function Registration() {
+  const router = useRouter();
   const [api, contextHolder] = notification.useNotification();
   const [submitRegistration, setSubmitRegistration] = useState<boolean>(false);
 
@@ -46,7 +48,8 @@ export default function Registration() {
     responsible_relation,
     service_id,
     unit_id,
-    user_id
+    user_id,
+    payment_id
   } = useSelector((state: any) => state.registration);
 
   const postRegistration = async () => {
@@ -77,8 +80,9 @@ export default function Registration() {
         responsible_address: responsible_address,
         responsible_relation: responsible_relation,
         service_id: service_id,
-        unit_id: unit_id,
-        user_id: user_id
+        // unit_id: unit_id,
+        user_id: user_id,
+        payment_id: payment_id
       })
     });
     if ([200, 201].includes(request.status)) {
@@ -86,15 +90,15 @@ export default function Registration() {
       setSubmitRegistration(false);
       openNotificationWithIcon("success", "Registrasi pasien telah berhasil dilakukan");
       setTimeout(() => {
-        return location.reload();
-      }, 3000);
+        return router.push("/dashboard/registration");
+      }, 1000);
     } else {
       setSubmitRegistration(false);
       openNotificationWithIcon("error", "");
     }
   }
 
-  return (<AppLayout>
+  return (<AppLayout active="registration">
     <div className="grid grid-cols-2 gap-6">
       {/* Data Pasien */}
       <FormPatient />

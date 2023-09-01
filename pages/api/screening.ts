@@ -14,7 +14,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(200).json(httpResponse);
       case "POST":
         const {screening_id} = JSON.parse(req.body);
-        const requestPost = await fetch(BASE_API + "/screening/" + screening_id);
+        const requestPost = await fetch(BASE_API + "/screening", {
+          method: "POST",
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            screening_id: screening_id
+          })
+        });
+        // console.log(await requestPost.json());
 
         if ([200, 201].includes(requestPost.status)) {
           return res.status(200).json(await requestPost.json());

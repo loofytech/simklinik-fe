@@ -1,20 +1,24 @@
 import { Card, Radio, Select, Input } from "antd";
 import type { RadioChangeEvent } from "antd";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { SET_PAYMENT_ID } from "@/store/reducers/registration";
 
 export default function FormPayment() {
   const [payment, setPayment] = useState<number>(0);
   const [insurance, setInsurance] = useState<any>(null);
   const [noInsurance, setNoInsurance] = useState<string>("");
   const [insurances, setInsurances] = useState<any>([]);
+  const dispatch = useDispatch();
 
   const handlePaymentChange = (evt: RadioChangeEvent) => {
     setPayment(evt.target.value);
-    setInsurance(null);
-    setNoInsurance("");
-    if (evt.target.value == 2) {
-      getInsurance();
-    }
+    dispatch(SET_PAYMENT_ID(evt.target.value));
+    // setInsurance(null);
+    // setNoInsurance("");
+    // if (evt.target.value == 2) {
+    //   getInsurance();
+    // }
   }
   
   const getInsurance = async () => {

@@ -3,7 +3,11 @@ import { items } from "@/routes";
 import { useRouter } from "next/router";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 
-export default function Menubar() {
+interface CProps {
+  active?: string;
+}
+
+export default function Menubar({active}: CProps) {
   const router = useRouter();
 
   return (<>
@@ -17,7 +21,7 @@ export default function Menubar() {
               icon={iMenu.icon}
               component={<Link href={iMenu.path} />}
               className="pr-2 hover:text-slate-950"
-              active={true}
+              active={active && active == iMenu.key ? true : false}
             >
               {iMenu.label}
             </MenuItem>);

@@ -23,6 +23,7 @@
     "next": "13.4.10",
     "nextjs-progressbar": "^0.0.16",
     "postcss": "8.4.26",
+    "qs": "^6.11.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
@@ -32,6 +33,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@types/cleave.js": "^1.4.7"
+    "@types/cleave.js": "^1.4.7",
+    "@types/qs": "^6.9.7"
   }
 }

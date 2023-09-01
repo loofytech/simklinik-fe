@@ -4,12 +4,14 @@ export const items = [
   {
     icon: <BiDesktop size={20} />,
     label: "Dashboard",
+    key: "dashboard",
     path: "/dashboard",
     children: null
   },
   {
     icon: <BiSpreadsheet size={20} />,
     label: "Pendaftaran",
+    key: "registration",
     path: "/dashboard/registration",
     children: null
   },
@@ -71,6 +73,7 @@ export const items = [
   {
     icon: <BiFirstAid size={20} />,
     label: "Pelayanan Umum",
+    key: "action",
     path: null,
     children: [
       {

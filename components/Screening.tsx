@@ -1,21 +1,51 @@
 import { Select } from "antd";
 import Cleave from "cleave.js/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Screening() {
+interface CProps {
+  data: any;
+}
+
+export default function Screening({data}: CProps) {
   const [weight, setWeight] = useState<any>(null);
   const [height, setHeight] = useState<any>(null);
   const [temperature, setTemperature] = useState<any>(null);
   const [breath, setBreath] = useState<any>(null);
   const [pulse, setPulse] = useState<any>(null);
-  const [bloodPressure, setBloodPressure] = useState<any>(null);
-  const [imt, setImt] = useState<any>(null);
+  const [bloodPressuremm, setBloodPressuremm] = useState<any>(null);
+  const [bloodPressurehg, setBloodPressurehg] = useState<any>(null);
+  const [imt, setImt] = useState<any>();
   const [oxygenSaturation, setOxygenSaturation] = useState<any>(null);
   const [bloodType, setBloodType] = useState<any>(null);
   const [diabetes, setDiabetes] = useState<any>(null);
   const [haemopilia, setHaemopilia] = useState<any>(null);
   const [heartDisease, setHeartDisease] = useState<any>(null);
   const [abdominalCircumference, setAbdominalCircumference] = useState<any>(null);
+  const [historyOtherDesease, setHistoryOtherDesease] = useState<any>(null);
+  const [historyTreatment, setHistoryTreatment] = useState<any>(null);
+  const [allergyMedicine, setAllergyMedicine] = useState<any>(null);
+  const [allergyFood, setAllergyFood] = useState<any>(null);
+
+  useEffect(() => {
+    setWeight(data?.body_weight);
+    setHeight(data?.body_height);
+    setTemperature(data?.body_temperature);
+    setBreath(data?.body_breath);
+    setPulse(data?.body_pulse);
+    setImt(data?.body_imt);
+    setOxygenSaturation(data?.body_oxygen_saturation);
+    setBloodPressuremm(data?.body_blood_pressure_mm);
+    setBloodPressurehg(data?.body_blood_pressure_hg);
+    setBloodType(data?.registration?.patient?.blood_type);
+    setDiabetes(data?.body_diabetes);
+    setHaemopilia(data?.body_haemopilia);
+    setHeartDisease(data?.body_heart_desease);
+    setAbdominalCircumference(data?.abdominal_circumference);
+    setHistoryOtherDesease(data?.history_other_desease);
+    setHistoryTreatment(data?.history_treatment);
+    setAllergyMedicine(data?.allergy_medicine);
+    setAllergyFood(data?.allergy_food);
+  }, [data]);
 
   return (<>
     <div className="grid grid-cols-2 gap-12">
@@ -92,8 +122,16 @@ export default function Screening() {
               options={{numeral: true, numeralDecimalMark: "thousand", delimiter: ".", numeralPositiveOnly: true}}
               className="h-10 text-sm w-full outline-none px-3"
               placeholder={""}
-              onChange={(evt) => setBloodPressure(evt.target.value)}
-              value={bloodPressure}
+              onChange={(evt) => setBloodPressuremm(evt.target.value)}
+              value={bloodPressuremm}
+            />
+            <span>/</span>
+            <Cleave
+              options={{numeral: true, numeralDecimalMark: "thousand", delimiter: ".", numeralPositiveOnly: true}}
+              className="h-10 text-sm w-full outline-none px-3"
+              placeholder={""}
+              onChange={(evt) => setBloodPressurehg(evt.target.value)}
+              value={bloodPressurehg}
             />
             <span className="mr-3 font-semibold">mmHg</span>
           </div>
@@ -154,9 +192,9 @@ export default function Screening() {
               onChange={(evt) => setDiabetes(evt)}
               value={diabetes}
               options={[
-                {label: "Belum Diketahui", value: 0},
-                {label: "Positif", value: 1},
-                {label: "Positif", value: 2}
+                {label: "Belum Diketahui", value: "0"},
+                {label: "Positif", value: "1"},
+                {label: "Positif", value: "2"}
               ]}
             />
           </div>
@@ -170,9 +208,9 @@ export default function Screening() {
               onChange={(evt) => setHaemopilia(evt)}
               value={haemopilia}
               options={[
-                {label: "Belum Diketahui", value: 0},
-                {label: "Positif", value: 1},
-                {label: "Positif", value: 2}
+                {label: "Belum Diketahui", value: "0"},
+                {label: "Positif", value: "1"},
+                {label: "Positif", value: "2"}
               ]}
             />
           </div>
@@ -186,9 +224,9 @@ export default function Screening() {
               onChange={(evt) => setHeartDisease(evt)}
               value={heartDisease}
               options={[
-                {label: "Belum Diketahui", value: 0},
-                {label: "Positif", value: 1},
-                {label: "Positif", value: 2}
+                {label: "Belum Diketahui", value: "0"},
+                {label: "Positif", value: "1"},
+                {label: "Positif", value: "2"}
               ]}
             />
           </div>
@@ -214,7 +252,8 @@ export default function Screening() {
         className="w-full outline-none border h-32 rounded-lg p-3"
         placeholder="Deskripsikan riwayat penyakit lain..."
         autoComplete="off"
-      ></textarea>
+        onChange={(evt) => setHistoryOtherDesease(evt.target.value)}
+      >{historyOtherDesease}</textarea>
     </div>
     <div className="mt-3">
       <div className="font-bold mb-1">Riwayat Pengobatan</div>
@@ -222,7 +261,8 @@ export default function Screening() {
         className="w-full outline-none border h-32 rounded-lg p-3"
         placeholder="Deskripsikan riwayat pengobatan..."
         autoComplete="off"
-      ></textarea>
+        onChange={(evt) => setHistoryTreatment(evt.target.value)}
+      >{historyTreatment}</textarea>
     </div>
     <div className="mt-3">
       <div className="font-bold mb-1">Alergi Obat</div>
@@ -230,7 +270,8 @@ export default function Screening() {
         className="w-full outline-none border h-32 rounded-lg p-3"
         placeholder="Deskripsikan alergi obat..."
         autoComplete="off"
-      ></textarea>
+        onChange={(evt) => setAllergyMedicine(evt.target.value)}
+      >{allergyMedicine}</textarea>
     </div>
     <div className="mt-3">
       <div className="font-bold mb-1">Alergi Makanan</div>
@@ -238,7 +279,8 @@ export default function Screening() {
         className="w-full outline-none border h-32 rounded-lg p-3"
         placeholder="Deskripsikan alergi makanan..."
         autoComplete="off"
-      ></textarea>
+        onChange={(evt) => setAllergyFood(evt.target.value)}
+      >{allergyFood}</textarea>
     </div>
     <div className="mt-5 flex items-center justify-center">
       <button type="button" className="bg-primary text-white px-5 py-1.5 text-lg font-bold rounded-lg">Submit</button>

@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (requestMethod) {
       case "GET":
         const {page} = req.query;
-        const requestGet = await fetch(BASE_API + "/service/?page=" + page);
+        const requestGet = await fetch(BASE_API + "/select/service/?page=" + page);
         const httpResponse = await requestGet.json();
 
         return res.status(200).json(httpResponse);
@@ -30,6 +30,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return res.status(200).json({message: "Submit OK!"});
         }
         return res.status(400).json({message: "Submit FAILED!"});
+      case "PUT":
+        const {service_id} = JSON.parse(req.body);
+        const requestPut = await fetch(BASE_API + "/select/doctor/" + service_id);
+        const responsePut = await requestPut.json();
+
+        return res.status(200).json(responsePut);
       default:
         return res.status(200).json({message: "Hello World"});
     }

@@ -12,7 +12,7 @@ dayjs.locale("id");
 
 interface DataType {
   id: number;
-  patient: any;
+  registration: any;
 }
 
 interface TableParams {
@@ -42,11 +42,17 @@ export default function Screening() {
     {title: "NO", dataIndex: "id", sorter: false, width: 10, render: (value, record, index) => {
       return <div className="text-center">{index + 1}</div>;
     }},
-    {title: 'NO. RM', dataIndex: 'patient', sorter: false, render: (value, record) => {
-      return `${value?.medical_record}`;
+    {title: 'NO. RM', dataIndex: 'registration', sorter: false, render: (value, record) => {
+      return `${value?.patient?.medical_record}`;
     }},
-    {title: 'NAMA', dataIndex: 'patient', sorter: false, render: (value, record) => {
-      return `${value?.patient_name}`;
+    {title: 'NAMA', dataIndex: 'registration', sorter: false, render: (value, record) => {
+      return `${value?.patient?.patient_name}`;
+    }},
+    {title: 'LAYANAN', dataIndex: 'registration', sorter: false, render: (value, record) => {
+      return `${value?.service?.service_name}`;
+    }},
+    {title: 'DOKTER', dataIndex: 'registration', sorter: false, render: (value, record) => {
+      return `${value?.doctor?.name}`;
     }},
     {title: 'AKSI', dataIndex: 'id', sorter: false, render: (value, record) => {
       return (<>

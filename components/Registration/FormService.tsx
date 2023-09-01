@@ -5,7 +5,6 @@ import { SET_SERVICE_ID, SET_UNIT_ID, SET_USER_ID } from "@/store/reducers/regis
 
 export default function FormService() {
   const [services, setServices] = useState<any>([]);
-  const [units, setUnits] = useState<any>([]);
   const [doctors, setDoctors] = useState<any>([]);
 
   const {
@@ -29,20 +28,7 @@ export default function FormService() {
 
   const handleServiceChange = async (value: any) => {
     dispatch(SET_SERVICE_ID(value));
-    const request = await fetch("/api/unit", {method: "PUT", body: JSON.stringify({service: value})});
-    if ([200, 201].includes(request.status)) {
-      const response = await request.json();
-      let data: any = [];
-      if (response.data.length > 0) response.data.map((dtl: any) => {
-        data.push({label: dtl.unit_name, value: dtl.id});
-      });
-      return setUnits(data);
-    }
-  }
-
-  const handleUnitChange = async (value: any) => {
-    dispatch(SET_UNIT_ID(value));
-    const request = await fetch("/api/doctor-schedule", {method: "PUT", body: JSON.stringify({unit: value})});
+    const request = await fetch("/api/service", {method: "PUT", body: JSON.stringify({service_id: value})});
     if ([200, 201].includes(request.status)) {
       const response = await request.json();
       let data: any = [];
@@ -52,6 +38,19 @@ export default function FormService() {
       return setDoctors(data);
     }
   }
+
+  // const handleUnitChange = async (value: any) => {
+  //   dispatch(SET_UNIT_ID(value));
+  //   const request = await fetch("/api/doctor-schedule", {method: "PUT", body: JSON.stringify({unit: value})});
+  //   if ([200, 201].includes(request.status)) {
+  //     const response = await request.json();
+  //     let data: any = [];
+  //     if (response.data.length > 0) response.data.map((dtl: any) => {
+  //       data.push({label: dtl.user.name, value: dtl.user_id});
+  //     });
+  //     return setDoctors(data);
+  //   }
+  // }
 
   useEffect(() => {
     fetchService();
@@ -67,14 +66,14 @@ export default function FormService() {
           options={services}
         />
       </div>
-      <div className="mt-4 flex flex-col gap-1">
+      {/* <div className="mt-4 flex flex-col gap-1">
         <span className="font-bold">Unit</span>
         <Select
           defaultValue={unit_id}
           onChange={(evt) => handleUnitChange(evt)}
           options={units}
         />
-      </div>
+      </div> */}
       <div className="mt-4 flex flex-col gap-1">
         <span className="font-bold">Dokter</span>
         <Select
