@@ -3,6 +3,7 @@ import { CloseCircleOutlined, CloseCircleFilled } from "@ant-design/icons";
 import type { RadioChangeEvent, DatePickerProps } from "antd";
 import { truncate } from "@/utils/globalFunction";
 import { useState, useEffect } from "react";
+import dayjs from "dayjs";
 import { useSelector, useDispatch } from "react-redux";
 import {
   SET_MEDICAL_RECORD,
@@ -17,13 +18,12 @@ import {
   SET_REGENCY,
   SET_DISTRICT,
   SET_SUBDISTRICT,
-  SET_PATIENT_BLOOD_TYPE,
   SET_RELIGION,
   SET_ETHNIC,
   SET_MARITAL_STATUS,
   SET_JOB,
   SET_EDUCATION
-} from "@/store/reducers/registration"
+} from "@/store/reducers/registration";
 
 export default function FormPatient() {
   const { Search } = Input;
@@ -94,7 +94,6 @@ export default function FormPatient() {
     patient_gender,
     birth_place,
     birth_date,
-    patient_blood_type,
     religion_id,
     education_id,
     job_id,
@@ -110,9 +109,32 @@ export default function FormPatient() {
     }
   }
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     setSearchPatient(true);
-    setTimeout(() => setSearchPatient(false), 3000);
+    const request = await fetch("/api/patient", {
+      method: "POST",
+      body: JSON.stringify({medical_record: medical_record})
+    });
+    if ([200, 201].includes(request.status)) {
+      const {data} = await request.json();
+      if (data) {
+        // console.log(data);
+        dispatch(SET_MEDICAL_RECORD(data.medical_record));
+        dispatch(SET_PATIENT_NAME(data.patient_name));
+        dispatch(SET_PATIENT_PHONE(data.patient_phone));
+        dispatch(SET_PATIENT_NIK(data.patient_nik));
+        dispatch(SET_BIRTH_PLACE(data.birth_place));
+        dispatch(SET_BIRTH_DATE(data.birth_date));
+        dispatch(SET_PATIENT_ADDRESS(data.address));
+        dispatch(SET_RELIGION(data.religion));
+        dispatch(SET_PATIENT_GENDER(data.patient_gender));
+        dispatch(SET_ETHNIC(data.ethnic));
+        dispatch(SET_MARITAL_STATUS(data.marital_status));
+        dispatch(SET_JOB(data.job));
+        dispatch(SET_EDUCATION(data.education));
+      }
+    }
+    await setSearchPatient(false);
   }
 
   const handleInputPatientDate: DatePickerProps['onChange'] = (date, dateString) => {
@@ -361,7 +383,13 @@ export default function FormPatient() {
           </div>
           <div className="flex flex-col gap-1">
             <span className="font-bold">Tanggal Lahir</span>
-            <DatePicker placeholder="" defaultValue={birth_date} onChange={handleInputPatientDate} />
+            <DatePicker
+              placeholder=""
+              format={"YYYY-MM-DD"}
+              defaultValue={birth_date}
+              value={dayjs(birth_date)}
+              onChange={handleInputPatientDate}
+            />
           </div>
         </div>
         <div className="flex flex-col gap-1">
@@ -468,6 +496,7 @@ export default function FormPatient() {
             <span className="font-bold">Agama</span>
             <Select
               defaultValue={religion_id}
+              value={religion_id}
               onChange={(value) => dispatch(SET_RELIGION(value))}
               allowClear
               options={religions}
@@ -477,6 +506,7 @@ export default function FormPatient() {
             <span className="font-bold">Jenis Kelamin</span>
             <Select
               defaultValue={patient_gender}
+              value={patient_gender}
               onChange={(value) => dispatch(SET_PATIENT_GENDER(value))}
               allowClear
               options={[
@@ -489,6 +519,7 @@ export default function FormPatient() {
             <span className="font-bold">Suku</span>
             <Select
               defaultValue={ethnic_id}
+              value={ethnic_id}
               onChange={(value) => dispatch(SET_ETHNIC(value))}
               allowClear
               options={ethnics}
@@ -498,6 +529,7 @@ export default function FormPatient() {
             <span className="font-bold">Status Pernikahan</span>
             <Select
               defaultValue={marital_status}
+              value={marital_status}
               onChange={(value) => dispatch(SET_MARITAL_STATUS(value))}
               allowClear
               options={maritalStatuses}
@@ -508,6 +540,7 @@ export default function FormPatient() {
           <span className="font-bold">Pekerjaan</span>
           <Select
             defaultValue={job_id}
+            value={job_id}
             onChange={(value) => dispatch(SET_JOB(value))}
             allowClear
             options={jobs}
@@ -517,6 +550,7 @@ export default function FormPatient() {
           <span className="font-bold">Pendidikan Terakhir</span>
           <Select
             defaultValue={education_id}
+            value={education_id}
             onChange={(value) => dispatch(SET_EDUCATION(value))}
             allowClear
             options={educations}

@@ -9,13 +9,6 @@ export const items = [
     children: null
   },
   {
-    icon: <BiSpreadsheet size={20} />,
-    label: "Pendaftaran",
-    key: "registration",
-    path: "/dashboard/registration",
-    children: null
-  },
-  {
     icon: <BiBox size={20} />,
     label: "Data Master",
     path: null,
@@ -69,6 +62,13 @@ export const items = [
         path: "/dashboard/masterdata/doctor-schedule"
       },
     ]
+  },
+  {
+    icon: <BiSpreadsheet size={20} />,
+    label: "Pendaftaran",
+    key: "registration",
+    path: "/dashboard/registration",
+    children: null
   },
   {
     icon: <BiFirstAid size={20} />,

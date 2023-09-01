@@ -13,8 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         return res.status(200).json(httpResponse);
       case "POST":
-        if (req.body.trim().length === 0) return res.status(401).json({message: 'body empty'});
-        return res.status(200).json({message: "POST"})
+        const {medical_record} = JSON.parse(req.body);
+        const requestPost = await fetch(BASE_API + "/patient/" + medical_record);
+        const responsePost = await requestPost.json();
+
+        return res.status(200).json(responsePost);
       default:
         return res.status(200).json({message: 'Welcome to API Routes!'});
     }

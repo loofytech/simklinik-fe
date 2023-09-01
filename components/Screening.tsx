@@ -27,20 +27,20 @@ export default function Screening({data}: CProps) {
   const [allergyFood, setAllergyFood] = useState<any>(null);
 
   useEffect(() => {
-    setWeight(data?.body_weight);
-    setHeight(data?.body_height);
-    setTemperature(data?.body_temperature);
-    setBreath(data?.body_breath);
-    setPulse(data?.body_pulse);
-    setImt(data?.body_imt);
-    setOxygenSaturation(data?.body_oxygen_saturation);
-    setBloodPressuremm(data?.body_blood_pressure_mm);
-    setBloodPressurehg(data?.body_blood_pressure_hg);
+    setWeight(data?.body_weight == 0 ? null : data?.body_weight);
+    setHeight(data?.body_height == 0 ? null : data?.body_height);
+    setTemperature(data?.body_temperature == 0 ? null : data?.body_temperature);
+    setBreath(data?.body_breath == 0 ? null : data?.body_breath);
+    setPulse(data?.body_pulse == 0 ? null : data?.body_pulse);
+    setImt(data?.body_imt == 0 ? null : data?.body_imt);
+    setOxygenSaturation(data?.body_oxygen_saturation == 0 ? null : data?.body_oxygen_saturation);
+    setBloodPressuremm(data?.body_blood_pressure_mm == 0 ? null : data?.body_blood_pressure_mm);
+    setBloodPressurehg(data?.body_blood_pressure_hg == 0 ? null : data?.body_blood_pressure_hg);
     setBloodType(data?.registration?.patient?.blood_type);
     setDiabetes(data?.body_diabetes);
     setHaemopilia(data?.body_haemopilia);
     setHeartDisease(data?.body_heart_desease);
-    setAbdominalCircumference(data?.abdominal_circumference);
+    setAbdominalCircumference(data?.abdominal_circumference == 0 ? null : data?.abdominal_circumference);
     setHistoryOtherDesease(data?.history_other_desease);
     setHistoryTreatment(data?.history_treatment);
     setAllergyMedicine(data?.allergy_medicine);
