@@ -1,10 +1,15 @@
 import { Select } from "antd";
 import Cleave from "cleave.js/react";
 import { useEffect, useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { notification } from "antd";
+import { useRouter } from "next/router";
 
 interface CProps {
   data: any;
 }
+
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 export default function Screening({data}: CProps) {
   const [weight, setWeight] = useState<any>(null);
@@ -26,6 +31,17 @@ export default function Screening({data}: CProps) {
   const [allergyMedicine, setAllergyMedicine] = useState<any>(null);
   const [allergyFood, setAllergyFood] = useState<any>(null);
 
+  const router = useRouter();
+  const [api, contextHolder] = notification.useNotification();
+  const [submitScreening, setSubmitScreening] = useState<boolean>(false);
+
+  const openNotificationWithIcon = (type: NotificationType, message: string) => {
+    api[type]({
+      message: 'Registrasi Notifikasi',
+      description: message,
+    });
+  }
+
   useEffect(() => {
     setWeight(data?.body_weight == 0 ? null : data?.body_weight);
     setHeight(data?.body_height == 0 ? null : data?.body_height);
@@ -46,6 +62,34 @@ export default function Screening({data}: CProps) {
     setAllergyMedicine(data?.allergy_medicine);
     setAllergyFood(data?.allergy_food);
   }, [data]);
+
+  const handleSubmit = async () => {
+    setSubmitScreening(true);
+    const request = await fetch("/api/screening", {
+      method: "PUT",
+      body: JSON.stringify({
+        registration_id: data.registration_id, blood_type: bloodType, body_weight: weight,
+        body_height: height, body_temperature: temperature, body_breath: breath,
+        body_pulse: pulse, body_blood_pressure_mm: bloodPressuremm, body_blood_pressure_hg: bloodPressurehg,
+        body_imt: imt, body_oxygen_saturation: oxygenSaturation, body_diabetes: diabetes,
+        body_haemopilia: haemopilia, body_heart_desease: heartDisease, abdominal_circumference: abdominalCircumference,
+        history_other_desease: historyOtherDesease, history_treatment: historyTreatment, allergy_medicine: allergyMedicine,
+        allergy_food: allergyFood
+      })
+    });
+
+    if ([200, 201, 300, 301, 304].includes(request.status)) {
+      const response = await request.json();
+      setSubmitScreening(false);
+      openNotificationWithIcon("success", "Skrining pasien telah berhasil dilakukan");
+      setTimeout(() => {
+        return router.push("/dashboard/public-service/screening");
+      }, 1000);
+    } else {
+      setSubmitScreening(false);
+      openNotificationWithIcon("error", "");
+    }
+  }
 
   return (<>
     <div className="grid grid-cols-2 gap-12">
@@ -283,7 +327,16 @@ export default function Screening({data}: CProps) {
       >{allergyFood}</textarea>
     </div>
     <div className="mt-5 flex items-center justify-center">
-      <button type="button" className="bg-primary text-white px-5 py-1.5 text-lg font-bold rounded-lg">Submit</button>
+      <button
+        type="button"
+        className="bg-primary flex justify-center items-center gap-2 text-white font-bold py-2 px-5 rounded disabled:bg-blue-400"
+        onClick={handleSubmit}
+        disabled={submitScreening}
+      >
+        {submitScreening && <LoadingOutlined style={{fontSize: 16}} />}
+        <span>Submit Skrining</span>
+      </button>
     </div>
+    {contextHolder}
   </>);
 }

@@ -13,6 +13,7 @@ dayjs.locale("id");
 interface DataType {
   id: number;
   registration: any;
+  is_ready_action: number;
 }
 
 interface TableParams {
@@ -63,6 +64,13 @@ export default function Screening() {
         >
           Skrining
         </Link>
+        {record.is_ready_action == 1 && <Link
+          href={"/dashboard/public-service/screening/" + value}
+          type="button"
+          className="ml-1 px-3 py-1.5 bg-primary font-bold text-white rounded text-xs hover:text-white"
+        >
+          Periksa
+        </Link>}
       </>);
     }},
   ]
@@ -116,7 +124,6 @@ export default function Screening() {
   return (<AppLayout>
     <div className="bg-white">
       <div className="p-3 flex items-center justify-between text-xl">
-        {/* <button className="px-4 py-2 bg-primary text-white rounded text-sm" type="button" onClick={() => setModalCreate(true)}>Tambah Suku</button> */}
         <span className="font-bold">Skrining list</span>
         <span className="">{date}</span>
       </div>
@@ -124,39 +131,16 @@ export default function Screening() {
         bordered
         columns={columns}
         rowKey={(record) => record.id}
+        onRow={(record, index) => ({
+          style: {
+            background: record.is_ready_action == 1 ? "rgb(105, 108, 255, 0.2)" : "default"
+          }
+        })}
         dataSource={data}
         pagination={tableParams.pagination}
         loading={loading}
         onChange={handleTableChange}
       />
     </div>
-    <Modal
-      title="Tambah Suku"
-      centered
-      open={modalCreate}
-      onCancel={() => setModalCreate(false)}
-      footer={false}
-    >
-      <form onSubmit={postData} className="mt-3">
-        <div className="mb-3 flex flex-col gap-1.5">
-          <label htmlFor="name" className="font-bold">Suku</label>
-          <input
-            type="text"
-            className="px-3 border rounded h-10 outline-none"
-            autoComplete="off"
-            value={name}
-            onChange={(evt) => setName(evt.target.value)}
-          />
-        </div>
-        <button
-          type="submit"
-          className={`${submit ? "opacity-70" : "opacity-100"} bg-primary px-4 py-2 text-white rounded text-sm flex items-center gap-2`}
-          disabled={submit}
-        >
-          {submit && <LoadingOutlined style={{ fontSize: 18 }} spin />}
-          Submit
-        </button>
-      </form>
-    </Modal>
   </AppLayout>);
 }
